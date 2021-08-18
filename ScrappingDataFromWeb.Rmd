@@ -1,0 +1,104 @@
+---
+title: "Insurrectionist Data From NPR"
+author: "Nicholas Jacob"
+date: "4/17/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rvest)
+library(RSelenium)
+library(httr)
+library(rlist)
+library(tidyverse)
+library(readr)
+```
+
+## Gathering Data
+
+The data is loaded via JavaScript so I'll have to use RSelenium to interact with the webpage.
+
+```{r}
+url = "https://apps.npr.org/dailygraphics/graphics/capitol-riot-table-20210204/"
+#shell('docker run -d -p 4445:4444 selenium/standalone-firefox')
+remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4445L, browserName = "firefox")
+```
+
+Now I'll open the page
+
+```{r}
+remDr$open()
+remDr$navigate("https://apps.npr.org/dailygraphics/graphics/capitol-riot-table-20210204/")
+```
+
+```{r}
+webElem <- remDr$findElement("css", "body")
+webElem$sendKeysToElement(list(key = "end")) # Here we are using the "End" key on your keyboard, ensuring we're going fully downhill to the bottom of the page. Type selKeys in the R console to see all keys.
+Sys.sleep(10) # It can take a while to load 
+```
+
+```{r}
+htmlpage <- webElem$getPageSource()
+Sys.sleep(5)
+remDr$close()
+```
+
+```{r}
+df <- read_html(htmlpage[[1]]) %>%
+  html_table()
+```
+
+```{r}
+data <- data.frame(df[[1]])
+```
+
+```{r}
+data["Age"] <- parse_number(data$Name)
+```
+
+```{r}
+mean(data$Age, na.rm = TRUE)
+```
+
+```{r}
+data["FirstALastName"] <- sapply(strsplit(data$Name,"   "),"[[",1)
+```
+
+```{r}
+loc <- gsub("[0-9]+ years old","",vapply(strsplit(data$Name,"   "),"[",2, FUN.VALUE=character(1)))
+```
+
+```{r}
+data["State"] <- gsub(" ","",vapply(strsplit(loc,","),"[",2,FUN.VALUE = character(1)))
+```
+
+```{r}
+data["City"] <- gsub(" ","",vapply(strsplit(loc,","),"[",1,FUN.VALUE = character(1)))
+```
+
+```{r}
+data["Theft"] <- grepl("Theft", data$Charges, fixed = TRUE)
+```
+
+```{r}
+data["Conspiracy"] <- grepl("Conspiracy",data$Charges, fixed = TRUE)
+```
+
+```{r}
+data["Assault"] <- grepl("Assault",data$Charges, fixed = TRUE)
+```
+
+```{r}
+data["Parading"] <- grepl("Parading",data$Charges, fixed = TRUE)
+```
+
+```{r}
+write.csv(data, "/home/nurfnick/RScraping/Insurestion.csv", row.names = FALSE)
+```
+
+
+```{r}
+read_html('https://apps.npr.org/dailygraphics/graphics/capitol-riot-table-20210204/table.html') %>%
+  html_table()
+```
