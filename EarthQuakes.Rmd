@@ -1,0 +1,81 @@
+---
+title: "Earthquakes 2021"
+author: "Nicholas Jacob"
+date: "8/19/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rvest)
+library(tidyverse)
+url = 'https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021'
+```
+
+## Scrapping Wikipedia
+
+First I am going to gather the data from wikipedia with the **rvest** library.
+
+```{r gatherhtml}
+html <- read_html(url)
+```
+Let's take a look at the html and see what we have gathered.
+
+```{r veiwhtml}
+html
+```
+Look's like we got something.  Let's see if we can extract the tables from the webpage.
+
+```{r tableshtml}
+html %>%
+  html_table()
+```
+That was a lot of tables!  Let's dig in and see if we can extract the monthly ones.  I think the seventh one is January's.
+```{r}
+tables <- html %>%
+  html_table(header = TRUE)
+
+tables[[7]][-1,]
+```
+Let's now create our eventual final dataframe and make certain we add a column highlighting what month this happened in.
+
+```{r}
+jan <- tables[[7]][-1,]
+
+df <- jan %>% add_column(Month = 'January')
+
+
+```
+Let's automate the rest.  It is currently August so there is only 8 months of data.
+
+```{r}
+monthlist = c('January','February','March','April','May','June','July','August')
+counter = c(2:8)
+
+for (number in counter){
+  newtable <- tables[[5+2*number]][-1,] #the minus one is to get rid of the title of the columns 
+  newtable <- newtable %>% add_column(Month = monthlist[number])
+  df <- bind_rows(df,newtable)
+}
+```
+```{r}
+df
+```
+I am going to need to do some cleaning now that I have gathered the data.  In the *Date* column there is a reference hyperlink in square brackets.  Let's get rid of that and rename it *Day*
+```{r cleanDay}
+df <- df %>%
+  mutate(
+    Day = str_remove_all(Date,pattern = "\\[*[0-9]*\\]")
+  )
+  
+```
+
+Next I'd like to change all the casualty entries from *NA* to zero.
+
+```{r cleanCasualties}
+df <- df %>%
+  mutate(
+    Deaths = str_replace_all(Casualties...7,"\\-","0"),
+    Injuries = str_replace_all(Casualties...8,"\\-","0")
+  )
+```
