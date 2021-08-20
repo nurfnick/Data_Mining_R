@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(rvest)
 library(tidyverse)
+
 url = 'https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021'
 ```
 
