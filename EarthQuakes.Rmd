@@ -59,7 +59,7 @@ for (number in counter){
 }
 ```
 ```{r}
-df
+head(df)
 ```
 I am going to need to do some cleaning now that I have gathered the data.  In the *Date* column there is a reference hyperlink in square brackets.  Let's get rid of that and rename it *Day*
 ```{r cleanDay}
@@ -78,4 +78,42 @@ df <- df %>%
     Deaths = str_replace_all(Casualties...7,"\\-","0"),
     Injuries = str_replace_all(Casualties...8,"\\-","0")
   )
+```
+
+They were not actually *NA* but were -.  Tricky!
+
+Let's continue looking to extract some information about country and location
+```{r}
+df<- df %>%
+  mutate(
+    Offshore = str_detect(`Country and location`,"offshore"),
+    Country = str_extract(`Country and location`,'[A-z]+')
+  )
+```
+
+A couple of these are wrong, I'll fix the obvious ones and come back if I see others I missed later.
+
+```{r}
+df <- df %>%
+  mutate(
+    Country = replace(Country, Country == 'United','United States'),
+    Country = replace(Country, Country == 'South', 'South Georgia'),
+    Country = replace(Country, Country == 'Papua','Papua New Guinea')
+  )
+
+```
+
+
+```{r}
+df <- df %>%
+  mutate(
+    Country = replace(Country, str_detect(`Country and location`,'New Zealand'),'New Zealand'),
+    Country = replace(Country, str_detect(`Country and location`,'New Cal'),'New Caledonia')
+                 )
+```
+
+Okay I think I have extracted all the info I am going to.  I'll clean up the dataset and oranize it.
+```{r organize}
+df <- df %>%
+  select(c(Month,Day,Country,Deaths,Injuries,Mw,'Depth (km)',MMI,Offshore))
 ```
