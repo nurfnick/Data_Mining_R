@@ -20,7 +20,7 @@ library(readr)
 The data is loaded via JavaScript so I'll have to use RSelenium to interact with the webpage.
 
 ```{r}
-url = "https://apps.npr.org/dailygraphics/graphics/capitol-riot-table-20210204/"
+url = "https://apps.npr.org/dailygraphics/graphics/capitol-riot-table-20210204/table.html"
 #shell('docker run -d -p 4445:4444 selenium/standalone-firefox')
 remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4445L, browserName = "firefox")
 ```
@@ -98,7 +98,3 @@ write.csv(data, "/home/nurfnick/RScraping/Insurestion.csv", row.names = FALSE)
 ```
 
 
-```{r}
-read_html('https://apps.npr.org/dailygraphics/graphics/capitol-riot-table-20210204/table.html') %>%
-  html_table()
-```

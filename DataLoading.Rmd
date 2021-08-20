@@ -1,0 +1,36 @@
+---
+title: "Easy Data Loading"
+author: "Nicholas Jacob"
+date: "8/20/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## From Github
+
+The dataset I am going to look at includes all people killed by a police officer in 2016.  I gathered this dataset a while back and put it on my github.  You can see the original from the Gaurdian Newspaper [here](https://www.theguardian.com/us-news/ng-interactive/2015/jun/01/the-counted-police-killings-us-database).  I uploaded the file to my github and created a `raw` link for it.  I'll now read it into my code
+
+```{r load the data from link}
+df <- read.csv("https://raw.githubusercontent.com/nurfnick/Data_Sets_For_Stats/master/CuratedDataSets/the-counted-2016.csv")
+```
+I give a small sample of the data using the head command.  Printing all of the data should be avoided!
+
+```{r}
+head(df)
+```
+
+## From Upload to RStudio
+
+If you were not going to load the data from a link (github only supports small data files).  You can load directly into RStudio.  Use `Upload` and select our file, I did this with a file called **disney.xlsx**.  Now that it is in, I'll load it into R.
+
+```{r Load Excel From Directory}
+library(readxl)
+df2 = read_excel("disney.xlsx")
+```
+
+```{r}
+head(df2)
+```

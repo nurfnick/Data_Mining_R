@@ -1,0 +1,29 @@
+---
+title: "Text Analysis:  Target Earnings Calls"
+author: "Nicholas Jacob"
+date: "8/20/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(pdftools)
+```
+
+## Trying to Automate This
+
+I am going to point R at the 
+```{r gathering PDF}
+html <- read_html('https://investors.target.com/events-and-presentations/archived') #pointing to the website
+```
+
+Let's take a peak at the html and see if you can find the links to the transcripts of the earnings calls.
+
+```{r}
+links <- html %>%
+  html_nodes("a") %>%
+  html_attr("href") 
+
+links <- links[str_detect(links,pattern = 'investors')][14:52] #found the ones with investor in the name and grabed the ones that look like pdfs
+```
