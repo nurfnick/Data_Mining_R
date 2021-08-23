@@ -34,3 +34,34 @@ df2 = read_excel("disney.xlsx")
 ```{r}
 head(df2)
 ```
+## Built Into R
+
+There are some datasets included in packages for R.  You can find a list [here](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html)  I'll load something from the list
+
+```{r}
+Titanic
+```
+This will *NOT* work for the project...`iris` or `cars` might...
+
+## A Smattering of R Packages 
+
+I found mention of a baseball stats package so I've added to my library by installing.  You can find more info [here](http://www.seanlahman.com/baseball-archive/statistics/)
+
+```{r}
+library(Lahman)
+#help(Lahman)
+head(Batting)
+```
+
+```{r}
+library(babynames)
+head(babynames)
+```
+```{r}
+library(nycflights13)
+head(flights)
+```
+```{r}
+library(fec16)
+head(candidates)
+```
