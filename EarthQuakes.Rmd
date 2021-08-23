@@ -92,6 +92,7 @@ df<- df %>%
   )
 ```
 
+
 A couple of these are wrong, I'll fix the obvious ones and come back if I see others I missed later.
 
 ```{r}
@@ -113,8 +114,36 @@ df <- df %>%
                  )
 ```
 
+```{r}
+df <- df %>%
+  rename(Depth = 'Depth (km)')
+```
 Okay I think I have extracted all the info I am going to.  I'll clean up the dataset and oranize it.
 ```{r organize}
 df <- df %>%
-  select(c(Month,Day,Country,Deaths,Injuries,Mw,'Depth (km)',MMI,Offshore))
+  select(c(Month,Day,Country,Deaths,Injuries,Mw,Depth,MMI,Offshore))
+```
+```{r}
+df <- df %>%
+  mutate(
+    Deaths = str_remove_all(Deaths,","),
+    Injuries = str_remove_all(Injuries, ",")
+  )
+```
+
+```{r}
+df <- df %>%
+  mutate(Deaths = as.integer(Deaths),
+         Injuries = as.integer(Injuries),
+         Depth = as.numeric(Depth),
+         Day = as.integer(Day),
+         Mw = as.numeric(Mw))
+
+```
+
+## Ready For EDA
+
+```{r}
+df %>%
+  summarize(mean())
 ```
