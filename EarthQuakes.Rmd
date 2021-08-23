@@ -145,5 +145,14 @@ df <- df %>%
 
 ```{r}
 df %>%
-  summarize(mean())
+  summarize(Average_Deaths = mean(Deaths),
+            Average_Injuries = mean(Injuries))
+```
+```{r}
+df %>% summarize_if(is.numeric, c(Mean = mean,Median = median))
+```
+```{r}
+df %>%
+  group_by(MMI) %>%
+  summarize_if(is.numeric,mean)
 ```
