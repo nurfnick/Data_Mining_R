@@ -156,3 +156,33 @@ df %>%
   group_by(MMI) %>%
   summarize_if(is.numeric,mean)
 ```
+
+```{r}
+summary(df$Day)
+```
+
+```{r}
+ggplot(data = df, aes(y= Day,color = Month)) +
+  geom_boxplot()
+
+```
+
+```{r}
+ggplot(df, aes(x= Day)) +
+  geom_histogram()
+```
+
+```{r}
+ggplot(df, aes(x= Injuries))+
+  geom_histogram()
+```
+
+```{r}
+ggplot(df, aes(x= MMI))+
+  geom_bar(aes(fill = Month), position = 'fill')
+```
+
+```{r}
+ggplot(df, aes(x= Injuries, y= Deaths)) +
+  geom_point(aes(color = MMI))
+```
