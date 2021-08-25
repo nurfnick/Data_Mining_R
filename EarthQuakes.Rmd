@@ -152,6 +152,20 @@ df %>%
 df %>% summarize_if(is.numeric, c(Mean = mean,Median = median))
 ```
 ```{r}
+library(corrr)
+df_cor <- df %>%
+  select(c(Day,Injuries,Deaths,Mw,Depth)) %>%
+  correlate()
+
+df_cor
+```
+```{r}
+stretch(df_cor) %>%
+  ggplot(aes(x=x, y=y, fill=r, label = round(r,2))) +
+  geom_tile()
+```
+
+```{r}
 df %>%
   group_by(MMI) %>%
   summarize_if(is.numeric,mean)

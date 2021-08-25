@@ -224,6 +224,107 @@ df2 = read_excel(&quot;disney.xlsx&quot;)</code></pre>
 ## #   Story by &lt;chr&gt;, Narrated by &lt;chr&gt;, Cinematography &lt;chr&gt;, Edited by &lt;chr&gt;,
 ## #   Screenplay by &lt;chr&gt;, Production companies &lt;chr&gt;, Adaptation by &lt;chr&gt;, …</code></pre>
 </div>
+<div id="built-into-r" class="section level2">
+<h2>Built Into R</h2>
+<p>There are some datasets included in packages for R. You can find a list <a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html">here</a> I’ll load something from the list</p>
+<pre class="r"><code>Titanic</code></pre>
+<pre><code>## , , Age = Child, Survived = No
+## 
+##       Sex
+## Class  Male Female
+##   1st     0      0
+##   2nd     0      0
+##   3rd    35     17
+##   Crew    0      0
+## 
+## , , Age = Adult, Survived = No
+## 
+##       Sex
+## Class  Male Female
+##   1st   118      4
+##   2nd   154     13
+##   3rd   387     89
+##   Crew  670      3
+## 
+## , , Age = Child, Survived = Yes
+## 
+##       Sex
+## Class  Male Female
+##   1st     5      1
+##   2nd    11     13
+##   3rd    13     14
+##   Crew    0      0
+## 
+## , , Age = Adult, Survived = Yes
+## 
+##       Sex
+## Class  Male Female
+##   1st    57    140
+##   2nd    14     80
+##   3rd    75     76
+##   Crew  192     20</code></pre>
+<p>This will <em>NOT</em> work for the project…<code>iris</code> or <code>cars</code> might…</p>
+</div>
+<div id="a-smattering-of-r-packages" class="section level2">
+<h2>A Smattering of R Packages</h2>
+<p>I found mention of a baseball stats package so I’ve added to my library by installing. You can find more info <a href="http://www.seanlahman.com/baseball-archive/statistics/">here</a></p>
+<pre class="r"><code>library(Lahman)
+#help(Lahman)
+head(Batting)</code></pre>
+<pre><code>##    playerID yearID stint teamID lgID  G  AB  R  H X2B X3B HR RBI SB CS BB SO
+## 1 abercda01   1871     1    TRO   NA  1   4  0  0   0   0  0   0  0  0  0  0
+## 2  addybo01   1871     1    RC1   NA 25 118 30 32   6   0  0  13  8  1  4  0
+## 3 allisar01   1871     1    CL1   NA 29 137 28 40   4   5  0  19  3  1  2  5
+## 4 allisdo01   1871     1    WS3   NA 27 133 28 44  10   2  2  27  1  1  0  2
+## 5 ansonca01   1871     1    RC1   NA 25 120 29 39  11   3  0  16  6  2  2  1
+## 6 armstbo01   1871     1    FW1   NA 12  49  9 11   2   1  0   5  0  1  0  1
+##   IBB HBP SH SF GIDP
+## 1  NA  NA NA NA    0
+## 2  NA  NA NA NA    0
+## 3  NA  NA NA NA    1
+## 4  NA  NA NA NA    0
+## 5  NA  NA NA NA    0
+## 6  NA  NA NA NA    0</code></pre>
+<pre class="r"><code>library(babynames)
+head(babynames)</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##    year sex   name          n   prop
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;
+## 1  1880 F     Mary       7065 0.0724
+## 2  1880 F     Anna       2604 0.0267
+## 3  1880 F     Emma       2003 0.0205
+## 4  1880 F     Elizabeth  1939 0.0199
+## 5  1880 F     Minnie     1746 0.0179
+## 6  1880 F     Margaret   1578 0.0162</code></pre>
+<pre class="r"><code>library(nycflights13)
+head(flights)</code></pre>
+<pre><code>## # A tibble: 6 × 19
+##    year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+## 1  2013     1     1      517            515         2      830            819
+## 2  2013     1     1      533            529         4      850            830
+## 3  2013     1     1      542            540         2      923            850
+## 4  2013     1     1      544            545        -1     1004           1022
+## 5  2013     1     1      554            600        -6      812            837
+## 6  2013     1     1      554            558        -4      740            728
+## # … with 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<pre class="r"><code>library(fec16)
+head(candidates)</code></pre>
+<pre><code>## # A tibble: 6 × 15
+##   cand_id   cand_name cand_pty_affili… cand_election_yr cand_office_st cand_office
+##   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;                       &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;      
+## 1 H0AL02087 ROBY, MA… REP                          2016 AL             H          
+## 2 H0AL02095 JOHN, RO… IND                          2016 AL             H          
+## 3 H0AL05163 BROOKS, … REP                          2016 AL             H          
+## 4 H0AL07086 SEWELL, … DEM                          2016 AL             H          
+## 5 H0AR01083 CRAWFORD… REP                          2016 AR             H          
+## 6 H0AR03055 WOMACK, … REP                          2016 AR             H          
+## # … with 9 more variables: cand_office_district &lt;chr&gt;, cand_ici &lt;chr&gt;,
+## #   cand_status &lt;chr&gt;, cand_pcc &lt;chr&gt;, cand_st1 &lt;chr&gt;, cand_st2 &lt;chr&gt;,
+## #   cand_city &lt;chr&gt;, cand_st &lt;chr&gt;, cand_zip &lt;chr&gt;</code></pre>
+</div>
 
 
 
