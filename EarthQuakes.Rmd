@@ -208,3 +208,10 @@ df %>%
   select(-Country,-Month,-Day) %>%
   ggpairs(aes(color = MMI))
 ```
+
+```{r}
+library(ggmosaic)
+
+ggplot(data = df)+
+  geom_mosaic( aes(x = product(MMI,Month),fill = Offshore),na.rm = TRUE) 
+```
