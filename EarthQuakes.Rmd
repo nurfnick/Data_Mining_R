@@ -200,3 +200,11 @@ ggplot(df, aes(x= MMI))+
 ggplot(df, aes(x= Injuries, y= Deaths)) +
   geom_point(aes(color = MMI))
 ```
+
+```{r}
+library(GGally)
+
+df %>% 
+  select(-Country,-Month,-Day) %>%
+  ggpairs(aes(color = MMI))
+```
