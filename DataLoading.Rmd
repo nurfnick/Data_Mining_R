@@ -65,3 +65,11 @@ head(flights)
 library(fec16)
 head(candidates)
 ```
+
+## UCI Machine Learning Repository
+
+This is a great resource for datasets of excellent quality.  I was able to load the **Iris** dataset from a link on the site. 
+
+```{r}
+read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data")
+```
