@@ -50,8 +50,8 @@ df <- jan %>% add_column(Month = 'January')
 Let's automate the rest.  It is currently August so there is only 8 months of data.
 
 ```{r}
-monthlist = c('January','February','March','April','May','June','July','August')
-counter = c(2:8)
+monthlist = c('January','February','March','April','May','June','July','August','September')
+counter = c(2:9)
 
 for (number in counter){
   newtable <- tables[[5+2*number]][-1,] #the minus one is to get rid of the title of the columns 
@@ -142,7 +142,10 @@ df <- df %>%
 ```
 
 ## Ready For EDA
-
+```{r}
+df <- df %>%
+  drop_na()
+```
 ```{r}
 df %>%
   summarize(Average_Deaths = mean(Deaths),
