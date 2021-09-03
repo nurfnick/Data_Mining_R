@@ -16,6 +16,11 @@ The dataset I am going to look at includes all people killed by a police officer
 ```{r load the data from link}
 df <- read.csv("https://raw.githubusercontent.com/nurfnick/Data_Sets_For_Stats/master/CuratedDataSets/the-counted-2016.csv")
 ```
+
+```{r}
+head(df)
+
+```
 I give a small sample of the data using the head command.  Printing all of the data should be avoided!
 
 ```{r}
