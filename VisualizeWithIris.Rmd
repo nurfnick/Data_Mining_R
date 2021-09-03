@@ -1,0 +1,42 @@
+---
+title: "Data Visualization"
+author: "Me"
+date: "9/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Let's Try Visualization With The Tidyverse!
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r iris}
+head(iris)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r histogram, echo=FALSE}
+ggplot(iris,aes(x = Sepal.Length)) +
+  geom_histogram(bins = 20)
+```
+
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_jitter() +
+  stat_smooth(method = 'lm')
+```
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = Species, fill = Species)) +
+  geom_boxplot() +
+  stat_summary(fun = mean, geom="point",color = 'orange') +
+  geom_point()
+```
