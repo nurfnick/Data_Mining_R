@@ -207,9 +207,11 @@ ggplot(df, aes(x= Injuries, y= Deaths)) +
 ```{r}
 library(GGally)
 
-df %>% 
-  select(-Country,-Month,-Day) %>%
-  ggpairs(aes(color = MMI))
+df1 <- df %>% 
+  select(-Country,-Month,-Day) 
+
+
+ggpairs(df1, aes(color = Offshore))
 ```
 
 ```{r}
@@ -217,4 +219,24 @@ library(ggmosaic)
 
 ggplot(data = df)+
   geom_mosaic( aes(x = product(MMI,Month),fill = Offshore),na.rm = TRUE) 
+```
+
+```{r}
+ggplot(df,aes(sample = Injuries)) +
+  geom_qq() +
+  geom_qq_line()
+```
+
+```{r, twoway with dplyr}
+df %>%
+  count(Offshore, MMI) %>%
+  spread(MMI,n, fill = 0)
+```
+
+```{r proportion table}
+df %>%
+  group_by(Offshore) %>%
+  summarise(Frequency = n()) %>%
+  mutate(Proportion = Frequency/sum(Frequency))
+
 ```
