@@ -90,6 +90,8 @@ df<- df %>%
     Offshore = str_detect(`Country and location`,"offshore"),
     Country = str_extract(`Country and location`,'[A-z]+')
   )
+
+
 ```
 
 
@@ -118,7 +120,7 @@ df <- df %>%
 df <- df %>%
   rename(Depth = 'Depth (km)')
 ```
-Okay I think I have extracted all the info I am going to.  I'll clean up the dataset and oranize it.
+Okay I think I have extracted all the info I am going to.  I'll clean up the dataset and organize it.
 ```{r organize}
 df <- df %>%
   select(c(Month,Day,Country,Deaths,Injuries,Mw,Depth,MMI,Offshore))
@@ -191,7 +193,7 @@ ggplot(df, aes(x= Day)) +
 
 ```{r}
 ggplot(df, aes(x= Injuries))+
-  geom_histogram()
+  geom_histogram(bins = 100)
 ```
 
 ```{r}
@@ -201,7 +203,7 @@ ggplot(df, aes(x= MMI))+
 
 ```{r}
 ggplot(df, aes(x= Injuries, y= Deaths)) +
-  geom_point(aes(color = MMI))
+  geom_jitter(aes(color = MMI))
 ```
 
 ```{r}
@@ -240,4 +242,35 @@ df %>%
   mutate(Proportion = Frequency/sum(Frequency))
 
 ```
-Testing with Jacob
+
+## Decision Trees
+
+Moving on to decision trees and classification.  The variable you are predicting must be a factor!
+
+```{r make offshore a factor}
+df <- df %>% mutate(
+  Offshore = factor(Offshore == TRUE, levels = c(TRUE, FALSE),
+                    labels = c('offshore','on land' ))
+)
+```
+
+```{r}
+library(rpart)
+library(rpart.plot)
+
+tree <- rpart(Offshore ~.,data = df)
+tree
+```
+```{r tree viz}
+rpart.plot(tree, extra = 2)
+```
+
+```{r}
+
+
+tree1 <- rpart(MMI ~Offshore + Deaths + Mw,data = df)
+tree1
+```
+```{r tree viz}
+rpart.plot(tree1, extra = 2)
+```
