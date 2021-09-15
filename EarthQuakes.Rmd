@@ -164,6 +164,7 @@ df_cor <- df %>%
 
 df_cor
 ```
+Here we see that the correlation looks great!
 ```{r}
 stretch(df_cor) %>%
   ggplot(aes(x=x, y=y, fill=r, label = round(r,2))) +
@@ -268,9 +269,10 @@ rpart.plot(tree, extra = 2)
 ```{r}
 
 
-tree1 <- rpart(MMI ~Offshore + Deaths + Mw,data = df)
+tree1 <- rpart(MMI ~Offshore + Deaths + Mw,data = df, method = 'class')
 tree1
 ```
-```{r tree viz}
+```{r tree viz2}
 rpart.plot(tree1, extra = 2)
 ```
+
