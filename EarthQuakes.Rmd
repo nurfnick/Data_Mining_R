@@ -276,3 +276,5 @@ tree1
 rpart.plot(tree1, extra = 2)
 ```
 
+If you want to implement C4.5 or C5.0, check out the examples [here](https://rpubs.com/kjmazidi/195428)
+

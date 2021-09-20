@@ -22,9 +22,11 @@ c(gini(1/4),gini(1/3),gini(1/2))
 ```
 
 A plot of the Gini
+
 ```{r plot of gini curve, echo=FALSE}
 curve(gini, from = 0, to = 1)
 ```
+
 ## Entropy
 
 ```{r}
@@ -41,7 +43,7 @@ curve(entropy, from = 0, to = 1)
 ```
 
 Try it in tidy too...
-```{r, echo = FALSE}
+```{r}
 library(ggplot2)
 
 ggplot(data.frame(x = c(0, 1)), aes(x = x)) +

@@ -83,7 +83,6 @@ read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.dat
 
 I see that a lot of you have found great datasets on Kaggle.  Rather than download and upload, I want to show how to directly pull from kaggle.com  This process will require an account with kaggle.
 
-```{r}
 library(httr)
 username <- "nurfnick"
 authkey <-.rs.askForPassword("foo")
@@ -94,4 +93,3 @@ temp <- tempfile()
 download.file(dataset$url,temp)
 data <- read.csv(unz(temp, "train.csv"))
 unlink(temp)
-```
