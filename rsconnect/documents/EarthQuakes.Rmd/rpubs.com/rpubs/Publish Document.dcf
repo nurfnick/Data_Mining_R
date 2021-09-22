@@ -1,0 +1,11 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/808865/b0e75afc46f049bcb434e13752b9fece
+bundleId: https://api.rpubs.com/api/v1/document/808865/b0e75afc46f049bcb434e13752b9fece
+url: http://rpubs.com/nurfnick/808865
+when: 1632348162.5535
+lastSyncTime: 1632348162.55351
