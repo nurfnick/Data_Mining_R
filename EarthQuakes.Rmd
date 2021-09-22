@@ -266,9 +266,104 @@ tree
 rpart.plot(tree, extra = 2)
 ```
 
+To make a prediction using the tree we have created, we pass *predict* the tree we have created and the dataset we want it to work on.
+
 ```{r}
+pred <- predict(tree, df, type = "class")
+head(pred)
+```
+Each has been classified into its category.  You can also recover the probabilities of the classification by dropping the *type = "class"*
+```{r}
+predict(tree, df) %>%
+  head()
+```
+We see that the first earthquake has a 93% shot of being offshore.
+
+Confusion table follows by using the classified data.
+
+```{r}
+confusion_table <- with(df, table(Offshore, pred))
+confusion_table
+```
+
+I will now examine what happens if I withhold some of the data and do a cross validation.  I split the data into thirds for testing and training.
+```{r}
+library(caret)
+
+inTrain <- createDataPartition(y = df$Month, p = .66, list = FALSE)
+df_train <- df %>% slice(inTrain)
+df_test <- df %>% slice(-inTrain)
+```
+```{r}
+dim(df_train)
+dim(df_test)
+```
+
+I will use the training set to build my model and then test it.  If you look at my original tree, the country is very important.  I am going to remove it from my tree and not allow that to be part of the decision tree (it was causing hell in me creating a tree!).
+```{r}
+tree_from_train <- rpart(Offshore ~.,data = subset(df_train, select=c( -Country)))
+pred_test <- predict(tree_from_train, subset(df_test, select=c( -Country)), type = "class")
+with(df_test, table(Offshore, pred_test))
+```
+Pretty decent job predicting on the withheld data!
+
+I'll create a full tree next!  I only have ~150 data points so I won't have to chop it but if you have lots of data please do!  I left the code that does chop it *sample_n()* gives *n* samples of the data
 
 
+
+```{r}
+df_no_Country <- subset(df, select=c( -Country))
+tree_full <- sample_n(df_no_Country,100) %>% #only keeps 100 of the data points ()
+  rpart(Offshore ~., data = ., control = rpart.control(minsplit = 2, cp = 0))
+
+rpart.plot(tree_full, extra = 2, roundint=FALSE,
+  box.palette = list( "Gn", "Bu")) # specify 2 colors
+```
+
+Holy cow that looks difficult to interpret!
+
+I see now that I was supposed to withhold some data to test with.  I don't have access to that data, but I can do predictions on all the data.  Note the 100 above are perfectly classified so the 50 that are left are the only ones that could be mis-classified.
+
+```{r}
+pred_full <- predict(tree_full, df_no_Country, type = "class")
+with(df, table(Offshore, pred_full))
+```
+
+Still not terrible but 7 mis-classified when originally on the training data there are no mis-classifications.  In any case you should see some over-fitting here.  High variance and low bias has caused over-fitting on the training.
+
+```{r}
+imp <- varImp(tree)
+head(imp)
+
+```
+```{r}
+imp %>% ggplot(aes(x = row.names(imp), weight = Overall)) +
+  geom_bar()
+```
+
+I am not satisfied with this way as I have no idea what *varimp* does, so I'll repeat this using a chi-squared test for significance.
+
+```{r}
+library(FSelector)
+
+weights <- df %>% chi.squared(Offshore ~ ., data = .) %>%
+  as_tibble(rownames = "feature") %>%
+  arrange(desc(attr_importance))
+weights
+
+```
+```{r}
+ggplot(weights,
+  aes(x = attr_importance, y = reorder(feature, attr_importance))) +
+  geom_bar(stat = "identity") +
+  xlab("Importance score") + ylab("Feature")
+```
+
+
+
+
+Another tree because I was playing around...
+```{r}
 tree1 <- rpart(MMI ~Offshore + Deaths + Mw,data = df, method = 'class')
 tree1
 ```
