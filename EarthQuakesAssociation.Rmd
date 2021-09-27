@@ -1,0 +1,161 @@
+---
+title: "Association on Earthquakes"
+author: "Nicholas Jacob"
+date: "9/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rvest)
+library(tidyverse)
+
+url = 'https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021'
+
+html <- read_html(url)
+
+tables <- html %>%
+  html_table(header = TRUE)
+
+
+jan <- tables[[7]][-1,]
+
+df <- jan %>% add_column(Month = 'January')
+
+
+
+monthlist = c('January','February','March','April','May','June','July','August','September')
+counter = c(2:9)
+
+for (number in counter){
+  newtable <- tables[[5+2*number]][-1,] #the minus one is to get rid of the title of the columns 
+  newtable <- newtable %>% add_column(Month = monthlist[number])
+  df <- bind_rows(df,newtable)
+}
+
+df <- df %>%
+  mutate(
+    Day = str_remove_all(Date,pattern = "\\[*[0-9]*\\]")
+  )
+  
+
+df <- df %>%
+  mutate(
+    Deaths = str_replace_all(Casualties...7,"\\-","0"),
+    Injuries = str_replace_all(Casualties...8,"\\-","0")
+  )
+
+df<- df %>%
+  mutate(
+    Offshore = str_detect(`Country and location`,"offshore"),
+    Country = str_extract(`Country and location`,'[A-z]+')
+  )
+
+df <- df %>%
+  mutate(
+    Country = replace(Country, Country == 'United','United States'),
+    Country = replace(Country, Country == 'South', 'South Georgia'),
+    Country = replace(Country, Country == 'Papua','Papua New Guinea')
+  )
+
+
+df <- df %>%
+  mutate(
+    Country = replace(Country, str_detect(`Country and location`,'New Zealand'),'New Zealand'),
+    Country = replace(Country, str_detect(`Country and location`,'New Cal'),'New Caledonia')
+                 )
+
+df <- df %>%
+  rename(Depth = 'Depth (km)')
+
+df <- df %>%
+  select(c(Month,Day,Country,Deaths,Injuries,Mw,Depth,MMI,Offshore))
+
+df <- df %>%
+  mutate(
+    Deaths = str_remove_all(Deaths,","),
+    Injuries = str_remove_all(Injuries, ",")
+  )
+
+df <- df %>%
+  mutate(Deaths = as.integer(Deaths),
+         Injuries = as.integer(Injuries),
+         Depth = as.numeric(Depth),
+         Day = as.integer(Day),
+         Mw = as.numeric(Mw))
+
+
+df <- df %>%
+  drop_na()
+
+df <- df %>% mutate(
+  Offshore = factor(Offshore == TRUE, levels = c(TRUE, FALSE),
+                    labels = c('offshore','on land' )),
+  MMI = factor(MMI, levels = c("-","I","II","III","IV","V","VI","VII","VIII","IX"), labels = c(0,"I","II","III","IV","V","VI","VII","VIII","IX")) ,
+  Month = factor(Month),
+  Country = factor(Country)
+)
+```
+
+
+
+I will use the same data from wikipedia on earthquakes in 2021 that I gathered here <put link>...  I have not included all the data cleaning in this document even though it was all necessary.  
+```{r}
+
+head(df)
+```
+
+## Association
+
+```{r new libraries}
+
+library(arules)
+library(arulesViz)
+```
+
+Added some new libraries.  And now to convert the data for association analysis.
+
+```{r}
+transactions(df)
+```
+
+Lot's of errors here!  Let's look at the columns and see if we can convert them into factors (or booleans) for analysis.
+```{r}
+colnames(df)[c(2,4,5,6,7)]
+```
+
+I don't think I can do anything with *Day* *Mw* or *Depth* but I could ask if there were any *Deaths* or *Injuries* since most were zeroed out in my data.
+
+```{r}
+df <- df %>% mutate(
+  Deaths = (Deaths > 0),
+  Injuries = (Injuries >0)
+)
+```
+
+Then I'll run the transations again and see how it has cleaned up.
+
+```{r}
+trans <- transactions(df)
+```
+
+```{r}
+summary(trans)
+```
+
+```{r}
+colnames(trans)
+```
+
+```{r}
+inspect(trans[1:3])
+```
+
+```{r}
+image(trans)
+```
+
+```{r}
+itemFrequencyPlot(trans,topN = 20)
+```
+
