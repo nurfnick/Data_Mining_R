@@ -15,7 +15,7 @@ url = 'https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021'
 
 ## Scrapping Wikipedia
 
-First I am going to gather the data from wikipedia with the **rvest** library.
+First I am going to gather the data from wikipedia with the `rvest` library.
 
 ```{r gatherhtml}
 html <- read_html(url)
@@ -23,18 +23,19 @@ html <- read_html(url)
 Let's take a look at the html and see what we have gathered.
 
 ```{r veiwhtml}
-html
+html[1]
 ```
 Look's like we got something.  Let's see if we can extract the tables from the webpage.
 
 ```{r tableshtml}
-html %>%
-  html_table()
+tables <- html %>%
+  html_table(header = TRUE)
+
+length(tables)
 ```
 That was a lot of tables!  Let's dig in and see if we can extract the monthly ones.  I think the seventh one is January's.
 ```{r}
-tables <- html %>%
-  html_table(header = TRUE)
+
 
 tables[[7]][-1,]
 ```
@@ -81,7 +82,7 @@ df <- df %>%
   )
 ```
 
-They were not actually *NA* but were -.  Tricky!
+They were not actually `NA` but were `-`.  Tricky!
 
 Let's continue looking to extract some information about country and location
 ```{r}
@@ -142,12 +143,12 @@ df <- df %>%
          Mw = as.numeric(Mw))
 
 ```
-
-## Ready For EDA
 ```{r}
 df <- df %>%
   drop_na()
 ```
+## Ready For EDA
+
 ```{r}
 df %>%
   summarize(Average_Deaths = mean(Deaths),
@@ -307,7 +308,7 @@ with(df_test, table(Offshore, pred_test))
 ```
 Pretty decent job predicting on the withheld data!
 
-I'll create a full tree next!  I only have ~150 data points so I won't have to chop it but if you have lots of data please do!  I left the code that does chop it *sample_n()* gives *n* samples of the data
+I'll create a full tree next!  I only have ~150 data points so I won't have to chop it but if you have lots of data please do!  I left the code that does chop it `sample_n()` gives $n$ samples of the data
 
 
 
