@@ -99,7 +99,7 @@ df <- df %>% mutate(
 
 
 
-I will use the same data from wikipedia on earthquakes in 2021 that I gathered here <put link>...  I have not included all the data cleaning in this document even though it was all necessary.  
+I will use the same data from wikipedia on earthquakes in 2021 that I gathered [here](https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021).  The previous portion of this project was published [here](https://nurfnick.github.io/Data_Mining_R/EarthQuakes.html)  I have not included all the data cleaning in this document even though it was all necessary.  It is hidden in the first cell!
 ```{r}
 
 head(df)
@@ -133,7 +133,7 @@ df <- df %>% mutate(
 )
 ```
 
-Then I'll run the transations again and see how it has cleaned up.
+Then I'll run the transactions again and see how it has cleaned up.
 
 ```{r}
 trans <- transactions(df)
@@ -158,4 +158,36 @@ image(trans)
 ```{r}
 itemFrequencyPlot(trans,topN = 20)
 ```
+```{r}
+vertical <- as(trans, "tidLists")
+as(vertical, "matrix")[1:10, 1:5]
+```
 
+```{r}
+its <- apriori(trans, parameter=list(target = "frequent"))
+```
+
+```{r}
+its
+```
+
+```{r}
+inspect(head(its, n = 10))
+```
+
+```{r}
+ggplot(tibble(`Itemset Size` = factor(size(its))), aes(`Itemset Size`)) + geom_bar()
+```
+
+```{r}
+rules <- apriori(trans, parameter = list(support = 0.05, confidence = 0.9))
+inspect(head(rules))
+```
+
+```{r}
+plot(rules,jitter = 1)
+```
+
+```{r}
+plot(rules, shading = "order")
+```
