@@ -24,8 +24,8 @@ df <- jan %>% add_column(Month = 'January')
 
 
 
-monthlist = c('January','February','March','April','May','June','July','August','September')
-counter = c(2:9)
+monthlist = c('January','February','March','April','May','June','July','August','September','October')
+counter = c(2:10)
 
 for (number in counter){
   newtable <- tables[[5+2*number]][-1,] #the minus one is to get rid of the title of the columns 
@@ -102,7 +102,7 @@ df <- df %>% mutate(
 I will use the same data from wikipedia on earthquakes in 2021 that I gathered [here](https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021).  The previous portion of this project was published [here](https://nurfnick.github.io/Data_Mining_R/EarthQuakes.html)  I have not included all the data cleaning in this document even though it was all necessary.  It is hidden in the first cell!
 ```{r}
 
-head(df)
+tail(df)
 ```
 
 ## Association
@@ -119,7 +119,7 @@ Added some new libraries.  And now to convert the data for association analysis.
 transactions(df)
 ```
 
-Lot's of errors here!  Let's look at the columns and see if we can convert them into factors (or booleans) for analysis.
+Lot's of errors here!  Let's look at the columns and see if we can convert them into factors (or Boolean) for analysis.
 ```{r}
 colnames(df)[c(2,4,5,6,7)]
 ```
@@ -138,6 +138,8 @@ Then I'll run the transactions again and see how it has cleaned up.
 ```{r}
 trans <- transactions(df)
 ```
+I am happy to let R do the default discretization of the rest of the data.  Partly because what is left I could not come up with better cutoffs.  Depth, Mw and Day nothing strikes me as important.  Day might be important in stock data but for a natural phenomenon, I can see no reason to chop it differently.
+
 
 ```{r}
 summary(trans)
@@ -164,6 +166,20 @@ as(vertical, "matrix")[1:10, 1:5]
 ```
 
 ```{r}
+trans
+trans_Nepal <- trans[trans %in% "Country=Nepal"]
+trans_Nepal
+```
+
+```{r}
+
+inspect(trans_Nepal)
+```
+Looks like there was only one earthquake in Nepal during May and it did cause injuries.
+
+Let's find some frequent itemsets
+
+```{r}
 its <- apriori(trans, parameter=list(target = "frequent"))
 ```
 
@@ -179,6 +195,7 @@ inspect(head(its, n = 10))
 ggplot(tibble(`Itemset Size` = factor(size(its))), aes(`Itemset Size`)) + geom_bar()
 ```
 
+Now we'll build some rules.  Very similar to looking at frequent!
 ```{r}
 rules <- apriori(trans, parameter = list(support = 0.05, confidence = 0.9))
 inspect(head(rules))

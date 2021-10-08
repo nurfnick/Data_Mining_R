@@ -341,7 +341,9 @@ head(imp)
 imp %>% ggplot(aes(x = row.names(imp), weight = Overall)) +
   geom_bar()
 ```
-
+```{r}
+barplot(imp$Overall)
+```
 I am not satisfied with this way as I have no idea what *varimp* does, so I'll repeat this using a chi-squared test for significance.
 
 ```{r}
@@ -373,4 +375,6 @@ rpart.plot(tree1, extra = 2)
 ```
 
 If you want to implement C4.5 or C5.0, check out the examples [here](https://rpubs.com/kjmazidi/195428)
-
+```{r}
+tree
+```
