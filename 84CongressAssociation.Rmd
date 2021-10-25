@@ -7,8 +7,9 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-df <- read_csv('1984Voting.csv')
 library(dplyr)
+df <- read.csv('1984Voting.csv')
+
 ```
 
 ## Congressional Association Rules
@@ -23,7 +24,7 @@ df %>% mutate(
   budget = factor(budget == 'y'),
   physician = factor(physician == 'y'),
   ElSalvador = factor(ElSalvador == 'y')
-)
+)%>% head()
 ```
 
 IDOIOT doo a for loop!!!!
@@ -36,11 +37,12 @@ df <- df %>% mutate_at(#looks to mutate lots!
   ~case_when(#requres a formula
     .%in% c('y') ~ TRUE #. grabs item and then checks if in the list ~ returns true
     ,TRUE ~ FALSE))#all others returned false
-df
+head(df)
 ```
 
 ```{r}
 library(arules)
+library(arulesViz)
 
 trans <- as(df,"transactions")
 inspect(trans[1:10])
@@ -70,4 +72,8 @@ plot(rules,jitter = 1)
 
 ```{r}
 plot(rules, shading = "order")
+```
+
+```{r}
+plot(head(rules, n = 100), method = "graph")
 ```

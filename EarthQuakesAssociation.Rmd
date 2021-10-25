@@ -209,3 +209,7 @@ plot(rules,jitter = 1)
 ```{r}
 plot(rules, shading = "order")
 ```
+
+```{r}
+plot(head(rules, n = 100), method = "graph")
+```
