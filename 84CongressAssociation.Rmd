@@ -1,0 +1,73 @@
+---
+title: "84Congress Association"
+author: "Nicholas Jacob"
+date: "10/22/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+df <- read_csv('1984Voting.csv')
+library(dplyr)
+```
+
+## Congressional Association Rules
+
+Data for this report was gathered from UCI Machine Learning Repository https://archive.ics.uci.edu/ml/datasets/congressional+voting+records 
+
+```{r}
+colnames(df)
+df %>% mutate(
+  handicapped = factor(handicapped == 'y'),
+  Water = factor(Water == 'y'),
+  budget = factor(budget == 'y'),
+  physician = factor(physician == 'y'),
+  ElSalvador = factor(ElSalvador == 'y')
+)
+```
+
+IDOIOT doo a for loop!!!!
+
+```{r}
+names <- colnames(df)[2:17]
+
+df <- df %>% mutate_at(#looks to mutate lots!
+  names,#defined above
+  ~case_when(#requres a formula
+    .%in% c('y') ~ TRUE #. grabs item and then checks if in the list ~ returns true
+    ,TRUE ~ FALSE))#all others returned false
+df
+```
+
+```{r}
+library(arules)
+
+trans <- as(df,"transactions")
+inspect(trans[1:10])
+```
+```{r}
+image(trans[1:100])
+```
+```{r}
+itemFrequencyPlot(trans,topN = 20)
+```
+
+```{r}
+its <- apriori(trans, parameter=list(target = "frequent"))
+```
+
+```{r}
+inspect(head(its, n = 10))
+```
+
+```{r}
+rules <- apriori(trans, parameter = list(support = 0.05, confidence = 0.9))
+inspect(head(rules,n= 100))
+```
+```{r}
+plot(rules,jitter = 1)
+```
+
+```{r}
+plot(rules, shading = "order")
+```

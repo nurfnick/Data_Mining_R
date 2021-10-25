@@ -136,6 +136,7 @@ df <- df %>% mutate(
 Then I'll run the transactions again and see how it has cleaned up.
 
 ```{r}
+as(df,"transactions")
 trans <- transactions(df)
 ```
 I am happy to let R do the default discretization of the rest of the data.  Partly because what is left I could not come up with better cutoffs.  Depth, Mw and Day nothing strikes me as important.  Day might be important in stock data but for a natural phenomenon, I can see no reason to chop it differently.
