@@ -1,0 +1,123 @@
+---
+title: "Regression on The Earthquake Data"
+author: "Nicholas Jacob"
+date: "11/1/2021"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rvest)
+library(tidyverse)
+
+url = 'https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021'
+
+html <- read_html(url)
+
+tables <- html %>%
+  html_table(header = TRUE)
+
+
+jan <- tables[[7]][-1,]
+
+df <- jan %>% add_column(Month = 'January')
+
+
+
+monthlist = c('January','February','March','April','May','June','July','August','September','October')
+counter = c(2:10)
+
+for (number in counter){
+  newtable <- tables[[5+2*number]][-1,] #the minus one is to get rid of the title of the columns 
+  newtable <- newtable %>% add_column(Month = monthlist[number])
+  df <- bind_rows(df,newtable)
+}
+
+df <- df %>%
+  mutate(
+    Day = str_remove_all(Date,pattern = "\\[*[0-9]*\\]")
+  )
+  
+
+df <- df %>%
+  mutate(
+    Deaths = str_replace_all(Casualties...7,"\\-","0"),
+    Injuries = str_replace_all(Casualties...8,"\\-","0")
+  )
+
+df<- df %>%
+  mutate(
+    Offshore = str_detect(`Country and location`,"offshore"),
+    Country = str_extract(`Country and location`,'[A-z]+')
+  )
+
+df <- df %>%
+  mutate(
+    Country = replace(Country, Country == 'United','United States'),
+    Country = replace(Country, Country == 'South', 'South Georgia'),
+    Country = replace(Country, Country == 'Papua','Papua New Guinea')
+  )
+
+
+df <- df %>%
+  mutate(
+    Country = replace(Country, str_detect(`Country and location`,'New Zealand'),'New Zealand'),
+    Country = replace(Country, str_detect(`Country and location`,'New Cal'),'New Caledonia')
+                 )
+
+df <- df %>%
+  rename(Depth = 'Depth (km)')
+
+df <- df %>%
+  select(c(Month,Day,Country,Deaths,Injuries,Mw,Depth,MMI,Offshore))
+
+df <- df %>%
+  mutate(
+    Deaths = str_remove_all(Deaths,","),
+    Injuries = str_remove_all(Injuries, ",")
+  )
+
+df <- df %>%
+  mutate(Deaths = as.integer(Deaths),
+         Injuries = as.integer(Injuries),
+         Depth = as.numeric(Depth),
+         Day = as.integer(Day),
+         Mw = as.numeric(Mw))
+
+
+df <- df %>%
+  drop_na()
+
+df <- df %>% mutate(
+  Offshore = factor(Offshore == TRUE, levels = c(TRUE, FALSE),
+                    labels = c('offshore','on land' )),
+  MMI = factor(MMI, levels = c("-","I","II","III","IV","V","VI","VII","VIII","IX"), labels = c(0,"I","II","III","IV","V","VI","VII","VIII","IX")) ,
+  Month = factor(Month),
+  Country = factor(Country)
+)
+```
+
+
+
+I will use the same data from wikipedia on earthquakes in 2021 that I gathered [here](https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021).  The previous portion of this project was published [here](https://nurfnick.github.io/Data_Mining_R/EarthQuakes.html) and the association portion of the project can be found [here](https://nurfnick.github.io/Data_Mining_R/EarthQuakesAssociation.html)  I have not included all the data cleaning in this document even though it was all necessary.  It is hidden in the first cell!
+```{r}
+
+tail(df)
+```
+
+To get started, I'll preform a simple regression.  Let's explore if the number of injuries can predict the number of deaths.
+```{r}
+lm(Deaths ~ Injuries, df)
+```
+
+I get a nice answer here showing that $Deaths = 0.1665*Injuries -3.3181$  Let's make a prediction with this using R.
+
+```{r}
+Injuries_to_Deaths <- function(NumberOfInjuries){
+  NumberOfDeaths <- 0.1665*NumberOfInjuries -3.3181
+  return(NumberOfDeaths)
+}
+
+Injuries_to_Deaths(100)
+```
+
+I test my function here too.  I see that 100 injuries we predict about 13 deaths.
