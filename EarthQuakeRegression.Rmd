@@ -23,8 +23,8 @@ df <- jan %>% add_column(Month = 'January')
 
 
 
-monthlist = c('January','February','March','April','May','June','July','August','September','October')
-counter = c(2:10)
+monthlist = c('January','February','March','April','May','June','July','August','September','October','November')
+counter = c(2:11)
 
 for (number in counter){
   newtable <- tables[[5+2*number]][-1,] #the minus one is to get rid of the title of the columns 
@@ -96,7 +96,7 @@ df <- df %>% mutate(
 )
 ```
 
-
+## Simple Linear Regression
 
 I will use the same data from wikipedia on earthquakes in 2021 that I gathered [here](https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021).  The previous portion of this project was published [here](https://nurfnick.github.io/Data_Mining_R/EarthQuakes.html) and the association portion of the project can be found [here](https://nurfnick.github.io/Data_Mining_R/EarthQuakesAssociation.html)  I have not included all the data cleaning in this document even though it was all necessary.  It is hidden in the first cell!
 ```{r}
@@ -106,7 +106,9 @@ tail(df)
 
 To get started, I'll preform a simple regression.  Let's explore if the number of injuries can predict the number of deaths.
 ```{r}
-lm(Deaths ~ Injuries, df)
+linear <- lm(Deaths ~ Injuries, df)
+
+linear
 ```
 
 I get a nice answer here showing that $Deaths = 0.1665*Injuries -3.3181$  Let's make a prediction with this using R.
@@ -121,3 +123,132 @@ Injuries_to_Deaths(100)
 ```
 
 I test my function here too.  I see that 100 injuries we predict about 13 deaths.
+
+I could have as easily used the `predict` function.
+```{r}
+a <- data.frame(Injuries = c(100))
+predict(linear,a)
+```
+This did provide a bit more accuracy!  Let's examine some of the features of the linear regression, examining the sum of the squares error.
+```{r}
+sum(#should be obvious!
+  (predict(linear,df)#use prediction
+   -df$Deaths)#subtract the actual
+  ^2)#don't forget to square
+```
+This is the value that linear regression attempts to minimize. 
+
+Here is the residual standard error.
+```{r}
+sqrt(sum((predict(linear,df)-df$Deaths)^2)/178)
+```
+ I can also see this number by calling the following:
+```{r}
+summary(linear)
+```
+Applied statistics is all about reading these tables but the most important factor are the \* You'll see that *Injuries* is identified as significant but the intercept was not.
+
+
+Let's examine the efficacy of preforming the regression by examining the plots.
+```{r}
+plot(linear)
+```
+
+The only graphic I am terribly familiar with is the QQ Plot.  We check does that fall on the line.  I can clearly see that it mostly falls on the line but there are some outliers that may be messing with the accuracy of the regression.  
+
+
+## Regression With No Intercept
+
+Let's revisit this quickly and force the intercept to be zero, since it was not statistically significant.
+
+```{r}
+linearNoIntercept <- lm(Deaths ~ 0 +Injuries, df)
+
+summary(linearNoIntercept)
+```
+
+We see a slight increase in some of the $p$-values but overall this helps our regression in interprability.   Meaning we don't have that awkard conversation about how if there are zero injuries, we expect negative deaths!
+
+## Multiple Regression
+
+I suspect that *offshore* earthquakes will not cause nearly as many deaths.  Let's see if we can integrate that into our computations
+
+```{r}
+multiple <- lm(Deaths ~ Injuries + Offshore, df)
+summary(multiple)
+```
+Actually it appears I have the opposite effect, being on land gives $-7.122$ deaths.  We should point out that the $p$-value is not significant so I probably should not keep it!  Maybe there is an interaction effect?  There are two ways for me to do this.  I'll show both.
+
+
+```{r}
+multiple2 <- lm(Deaths ~ Injuries:Offshore, df)
+summary(multiple2)
+```
+
+This interaction gives a different coefficient for Injuries depending on whether it happened on land or not.  The coefficient for on land is significant and is what was expected from the original regression.  The offshore coefficient is much less but not statistically significant.
+
+```{r}
+multiple3 <- lm(Deaths ~ Injuries*Offshore, df)
+summary(multiple3)
+```
+
+This one looks quite similar to the original multiple regression with the number of deaths increasing a lot if the earthquake is on shore.  None of these values are significant though so I wouldn't necessarily use this...
+
+Let's run a regression predicting Deaths on all of our data just to see what it looks like (you may not be able to do this!!!)
+
+```{r}
+multiple4 <- lm(Deaths ~.,df)
+summary(multiple4)
+```
+
+Looks like you should avoid July, Haiti, Pakistan and earthquakes that involve injuries.  Also looks like I originally picked the correct variable to look at!
+
+## More Visualizations
+
+I should have done this earlier but I got carried away tweaking the regression.
+
+```{r}
+ggplot(df,aes(x= Injuries, y = Deaths))+
+  geom_jitter(color = "Red") +
+  geom_smooth(method = lm)
+```
+
+There are several things to highlight here.  Clearly there was a terrible event with lots of deaths and injuries **and** I do really well predicting it.  The shadowing around the line is the confidence interval and some do fall out of it.  Overall it does seem appropriate to apply the linear regression to this data and use it to predict deaths!
+
+Let's do a multiple too to see the differences highlighted!
+```{r}
+ggplot(df,aes(x= Injuries, y = Deaths, color = Offshore))+
+  geom_point()+
+  geom_smooth(method = lm)
+```
+
+It is very hard to see it but there is a line with the Offshore deaths.  I'll make a new visualization just to see that.
+```{r}
+dfoff <- df %>% filter(Offshore == "offshore")
+
+ggplot(dfoff,aes(x= Injuries, y = Deaths))+
+  geom_jitter()+
+  geom_smooth(method = lm)
+
+```
+
+I think this highlights why we had such an issue with that regression in that it doesn't do a great job predicting anything except the points at the origin!
+
+Just for giggles I'll relax the requirement that it is linear.
+
+```{r}
+ggplot(dfoff,aes(x= Injuries, y = Deaths))+
+  geom_point()+
+  geom_smooth(method = "glm")
+
+```
+
+Ugg this was nasty hard.  I kept getting errors originally I had tried something similar to this code
+```{r}
+ggplot(df,aes(x= Injuries, y = Deaths))+
+  geom_point()+
+  geom_smooth()
+
+```
+
+As you can see I get a highly non-linear function there.  I think it was due to my low sample size in the offshore data.  In any case, I have the non-linear working here.
