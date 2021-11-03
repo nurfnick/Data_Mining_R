@@ -7,4 +7,4 @@ For example, the EarthQuakes.html file link is https://nurfnick.github.io/Data_M
 
 The Association file can be found here https://nurfnick.github.io/Data_Mining_R/EarthQuakesAssociation.html
 
-The Regression file can be found here https://nurfnick.github.io/Data_Mining_R/EarthQuakesRegression.html
+The Regression file can be found here https://nurfnick.github.io/Data_Mining_R/EarthQuakeRegression.html
