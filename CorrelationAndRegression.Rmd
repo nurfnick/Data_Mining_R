@@ -1,0 +1,206 @@
+---
+title: "Correlation and Regression"
+author: "Nicholas Jacob"
+date: "11/22/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Regression Homework Helper
+
+I am again going to try to keep it simple by using base R but doing some of the homework questions.
+
+1. Use a scatterplot and the linear correlation coefficient r to determine whether there is a correlation between the two variables. (Note: Use software, and don't forget to look at the scatterplot!) 
+
+First I'll load the data.  I could load the data via a csv but to keep the reprodicibility high, I am going to manually enter the data.
+```{r}
+x <-c(0.8,1.4 ,2,3.5,4.5,5.4,6.1,7.8,8.4,9.7,10.3,11.7,12.8,13.2,14.8)
+y <- c(14.2,13.6,13,11.5,10.5,9.6,8.9,7.2,6.6,5.3,4.7,3.3,2.2,1.8,0.2)
+plot(x,y)
+```
+
+That looks rather nicely linear!  Of course it is negatively correlated (the slope is negative!).
+
+To get the correlation $r$
+
+```{r}
+cor(x,y,method = "pearson")
+```
+We are using the 'Pearson' correlation method here.  If I call the **cor** fucntion without that it will give me several answers.
+
+```{r}
+cor.test(x,y)
+```
+
+
+
+Let's repeat this using the definition of correlation!
+$$
+r = \frac{\sum_{i=1}^n(x_i-\overline x)(y_i-\overline y )}{(n-1)s_xs_y}
+$$
+```{r}
+sx = sd(x)
+sy = sd(y) 
+n = length(x)
+xbar = mean(x)
+ybar = mean(y)
+numerator = mean((x-xbar)*(y-ybar))*n
+r = numerator/((n-1)*sx*sy)
+r
+```
+Sweet!  There are a couple of interesting things I did above!  I took a sequence $x$ and subtracted a single value $\overline x$ from each value.  I also multiplied sequences.
+
+Let's also get the equation of the linear relationship.
+
+```{r}
+lm(y~x)
+```
+This brings in a couple of interesting R calls.  I needed to do a function so I did **y~x** you see that I am making a function!  Let's define a function too so I can make some predictions.
+```{r}
+fit = lm(y~x)
+slope = coef(fit)[2]
+intercept = coef(fit)[1]
+yhat <- function(xpredict){
+  return( slope*xpredict+intercept)
+}
+yhat(10)
+```
+So here I did it with a user defined function.  While I was doing this I noticed the following command I could have used!
+
+```{r}
+xToPredict <-data.frame(x = c(10))
+predict(fit, newdata = xToPredict)
+```
+We may want commands like this later!  This command was a little bit of a pain becuase you can only pass a dataframe to the newdata option.  One really nice feature though is that I can do confidence intervals!
+```{r}
+predict(fit, newdata = xToPredict, interval = 'confidence')
+```
+Well crumb!  This one is not interesting because it is a perfect fit, $r=1$.  In any case it is giving us the 95% CI.
+
+Lastly we shoud perfom a hypothesis test.  Here the null hypothesis is that there is no correlation.
+$$
+H_0: \rho =0\\
+H_A: \rho\neq 0
+$$
+We have already computed our estimate of the test statistic $r$.  Then $t$ is
+$$
+t =
+\frac{r\sqrt{n-2}}{\sqrt{1-r^2}}
+$$
+Here the degrees of freedom will be $df=n-2$
+
+```{r}
+t = r*sqrt(n-2)/sqrt(1-r^2)
+t
+```
+There is no chance this happens!  Really I am dividing by 0...
+
+```{r}
+pt(t,n-2)
+```
+
+So yes, we can reject the null hypothesis, the $p$ is low.
+
+If instead we want to test the slope of the line.  We consider the following as the theorectical fit
+$$  
+\hat y = \beta_0+\beta_1x
+$$
+
+The standard error for the slope is
+$$  
+SE_{\beta_1} = \sqrt{\frac{MSE}{\sum\left(x_i-\overline x\right)^2}} 
+$$
+
+Where 
+$$
+MSE = \frac{\sum_{i=1}^n\left(y_i-\hat y_i\right)^2}{n-2}
+$$
+
+$MSE$ is referred to as the mean square error.  It adds all the square errors and divides by the adjusted total $(n-2)$ because of the degrees of freedom!
+
+```{r}
+yframe = data.frame('Values' = y)
+yhat <- predict(fit,yframe)
+MSE = sum((y-yhat)^2)/(n-2)
+MSE
+```
+
+The denominator in the $SE$ computation above is sometimes called the $S_{xx}$ The sum of the squares of $x$.
+```{r}
+sxx = sum((x-xbar)^2)
+```
+
+Then we can now compute the standard error for the slope as
+```{r}
+SEslope = sqrt(MSE/sxx)
+SEslope
+```
+
+If instead I wanted to look at the intercept, $\beta_0$, it's standard error is
+$$
+SE_{\beta_0} = \sqrt{MSE\left(\frac1n+\frac{\overline x}{S_{xx}}\right)}
+$$
+
+This will be straight forward as I have already computed all these values.
+```{r}
+SEintercept = sqrt(MSE*(1/n+xbar^2/sxx))
+SEintercept
+```
+
+Both $\beta_0$ and $\beta_1$ are $t$-student distributed with degrees of freedom $df = n-2$.
+
+If I want to do the confidence interval for a prediction by hand, it is very similar!  For an $x_h$ that you want to predict,
+$$
+SE_{x_h}=\sqrt{MSE\left(\frac1n+\frac{\left(x_h-\overline x\right)^2}{S_{xx}}\right)}
+$$
+Again this is $t$-studnet distributed.  I won't do this computation since I had R do it, but I could!
+
+My example is clunky here because I had a perfect fit to begin with but you can see that these computations are not terrible with R!  Also we are going to see shortly that R will return all of these values if I ask it to...
+
+```{r}
+summary(fit)
+```
+
+I was thinking about this problem a few hours later and low and behold there is a way to get R to tell you all of these values...  Passing the **fit** to the **summary()** function, we see all these outputs computed for you.  Standard Errors and even the MSE are computed right here!
+
+Okay I cannot resist graphing...
+```{r}
+plot(x,y)
+abline(fit)
+```
+```{r}
+plot(fit)
+```
+I don't really know what many of these plots are.  Normall Q-Q is looking at the normality of the points in the input.  The rest I have no idea about.  Maybe a project if someone is interested...
+
+2.  In some cases, the best-fitting multiple regression equation is of the form $\hat y=b_0+b_1x+b_2x^2+b_3x^3$. The graph of such an equation is called a cubic. Using the data set given below, and letting $x_1=x$, $x_2=x^2$, and $x_3=x^3$, find the multiple regression equation for the cubic that best fits the given data.
+
+
+```{r}
+xnew <- c(-8,-7,-2,0,3,6,10)
+ynew <- c(3.9,0.9,1.6,4.4,4.4,-5.2,-45.3)
+xsquare = xnew^2
+xcube = xnew^3
+quadraticfit = lm(ynew~xnew+xsquare+xcube)
+summary(quadraticfit)
+```
+
+I'll conclude with a graphic!
+```{r}
+eqn = function(x){
+  coef(quadraticfit)[1]
+  +
+    coef(quadraticfit)[2]*x
+  +
+    coef(quadraticfit)[3]*x^2
+  +
+    coef(quadraticfit)[4]*x^3}
+plot(x=1, xlim = c(-9,11),ylim = c(-46,15), xlab = "Great",ylab = "Scott")
+points(xnew,ynew)
+curve(eqn, add = TRUE)
+```
+
+This was harder than I thought it would be, I do prefer the ggplot2 package!
