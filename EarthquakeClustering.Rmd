@@ -1,0 +1,173 @@
+---
+title: "Clustering on The Earthquake Data"
+author: "Nicholas Jacob"
+date: "11/22/2021"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rvest)
+library(tidyverse)
+
+url = 'https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021'
+
+html <- read_html(url)
+
+tables <- html %>%
+  html_table(header = TRUE)
+
+
+jan <- tables[[7]][-1,]
+
+df <- jan %>% add_column(Month = 'January')
+
+
+
+monthlist = c('January','February','March','April','May','June','July','August','September','October','November')
+counter = c(2:11)
+
+for (number in counter){
+  newtable <- tables[[5+2*number]][-1,] #the minus one is to get rid of the title of the columns 
+  newtable <- newtable %>% add_column(Month = monthlist[number])
+  df <- bind_rows(df,newtable)
+}
+
+df <- df %>%
+  mutate(
+    Day = str_remove_all(Date,pattern = "\\[*[0-9]*\\]")
+  )
+  
+
+df <- df %>%
+  mutate(
+    Deaths = str_replace_all(Casualties...7,"\\-","0"),
+    Injuries = str_replace_all(Casualties...8,"\\-","0")
+  )
+
+df<- df %>%
+  mutate(
+    Offshore = str_detect(`Country and location`,"offshore"),
+    Country = str_extract(`Country and location`,'[A-z]+')
+  )
+
+df <- df %>%
+  mutate(
+    Country = replace(Country, Country == 'United','United States'),
+    Country = replace(Country, Country == 'South', 'South Georgia'),
+    Country = replace(Country, Country == 'Papua','Papua New Guinea')
+  )
+
+
+df <- df %>%
+  mutate(
+    Country = replace(Country, str_detect(`Country and location`,'New Zealand'),'New Zealand'),
+    Country = replace(Country, str_detect(`Country and location`,'New Cal'),'New Caledonia')
+                 )
+
+df <- df %>%
+  rename(Depth = 'Depth (km)')
+
+df <- df %>%
+  select(c(Month,Day,Country,Deaths,Injuries,Mw,Depth,MMI,Offshore))
+
+df <- df %>%
+  mutate(
+    Deaths = str_remove_all(Deaths,","),
+    Injuries = str_remove_all(Injuries, ",")
+  )
+
+df <- df %>%
+  mutate(Deaths = as.integer(Deaths),
+         Injuries = as.integer(Injuries),
+         Depth = as.numeric(Depth),
+         Day = as.integer(Day),
+         Mw = as.numeric(Mw))
+
+
+df <- df %>%
+  drop_na()
+
+df <- df %>% mutate(
+  Offshore = factor(Offshore == TRUE, levels = c(TRUE, FALSE),
+                    labels = c('offshore','on land' )),
+  MMI = factor(MMI, levels = c("-","I","II","III","IV","V","VI","VII","VIII","IX"), labels = c(0,"I","II","III","IV","V","VI","VII","VIII","IX")) ,
+  Month = factor(Month),
+  Country = factor(Country)
+)
+```
+
+## Clustering
+
+I will use the same data from wikipedia on earthquakes in 2021 that I gathered [here](https://en.wikipedia.org/wiki/List_of_earthquakes_in_2021).  The previous portion of this project was published [here](https://nurfnick.github.io/Data_Mining_R/EarthQuakes.html) and the association portion of the project can be found [here](https://nurfnick.github.io/Data_Mining_R/EarthQuakesAssociation.html)  I have not included all the data cleaning in this document even though it was all necessary.  It is hidden in the first cell!
+
+For clustering to work well, I can only pass numerical data that has been normalized.  By data contains numeric values, I will examine `Deaths, Injuries, Depth and Mw` to see if I can identify clusters.
+
+```{r}
+df_numeric <- df %>%
+  select("Deaths", "Injuries", "Depth", "Mw")
+head(df_numeric)
+```
+
+Time to normalize!
+```{r}
+df_scaled <- as.data.frame(scale(df_numeric))
+
+head(df_scaled)
+```
+
+I think the `scale` function did as I intended but let's do this with the tidyverse just to be consistent and see my results.
+
+```{r}
+df <- 
+  df %>% mutate(
+  Deaths = scale(Deaths),
+  Injuries = scale(Injuries),
+  Mw = scale(Mw),
+  Depth = scale(Depth)
+)
+
+df %>% summarise_if(is.numeric, c(mean = mean, standard_deviation = sd), na.rm = TRUE)
+```
+
+Looks like it did exactly as I intended.  Now I'll pass it to the $K$-means clustering algorithm in base R.
+
+```{r}
+km <- df %>% 
+  select("Deaths", "Injuries", "Depth", "Mw")  %>% 
+  kmeans(centers = 4, nstart = 5)
+km
+```
+Let's visualize our clusters in some 2D graphs.
+
+```{r}
+df <- df %>% add_column(Cluster = as.factor(km$cluster))
+
+ggplot(df, aes(x = Injuries, y = Deaths, color = Cluster)) +
+  geom_point()
+```
+
+Clearly we are seeing a cluster for that giant outlier.  Perhaps if I remove that outlier it will clear up some of this analysis.
+
+```{r}
+dfNoOut <- df %>% filter(!abs(Deaths)>3, #more than 3 sd's away from the mean
+              !abs(Injuries)>3,
+              !abs(Mw)>3,
+              !abs(Depth)>3)
+
+dfNoOut %>% head()
+```
+
+```{r}
+km <- dfNoOut %>% 
+  select("Deaths", "Injuries", "Depth", "Mw")  %>% 
+  kmeans(centers = 4, nstart = 5)
+
+dfNoOut <- dfNoOut %>% mutate(
+  Cluster = as.factor(km$cluster)
+)
+
+ggplot(dfNoOut, aes(x = Injuries, y = Deaths, color = Cluster)) +
+  geom_jitter()
+```
+
+Well after all that, I still don't see the clusters...  Attepmting to visualize the 4D data with only two of the variables is part of the issue!
