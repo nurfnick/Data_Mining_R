@@ -170,4 +170,24 @@ ggplot(dfNoOut, aes(x = Injuries, y = Deaths, color = Cluster)) +
   geom_jitter()
 ```
 
-Well after all that, I still don't see the clusters...  Attepmting to visualize the 4D data with only two of the variables is part of the issue!
+Well after all that, I still don't see the clusters...  Attempting to visualize the 4D data with only two of the variables is part of the issue!  Let's try making a bar chart that looks at all four variables and the clusters assigned.  Here are the centroids for the $k$-means.
+
+```{r}
+centroids <- as_tibble(km$centers, rownames = "cluster")
+centroids
+```
+
+Graphically, they look like this:
+
+```{r}
+ggplot(pivot_longer(centroids, cols = c(Deaths,Injuries,Depth,Mw), names_to = "feature"),
+  aes(x = value, y = feature, fill = cluster)) +
+  geom_bar(stat = "identity") +
+  facet_grid(rows = vars(cluster))
+```
+```{r}
+library(factoextra)
+fviz_cluster(km, data = dfNoOut[c('Mw','Depth')], centroids = TRUE, repel = TRUE, ellipse.type = "norm")
+```
+
+The trick to making a worthwhile graphic was actually looking at the variables that did vary!  `Mw` and `Depth` have a much nicer spread as seen in the bar graph so I suspected this graphic woul be much better!
