@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Loading Data
 
 ```{r}
-df <- read.csv()
+df <- read.csv("StudentSurveys.csv")
 ```
 
 
