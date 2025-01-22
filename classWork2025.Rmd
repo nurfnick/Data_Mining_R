@@ -7,8 +7,10 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
 ```
 
+# Data
 ## Loading Data
 
 ```{r}
@@ -17,4 +19,71 @@ df <- read.csv("https://raw.githubusercontent.com/nurfnick/Data_Mining_R/refs/he
 head(df)
 ```
 
+## Wrangling the Data with `dplyr`
 
+You should note that I added dplyr to the library above.  Following code gives me a frequency table.
+```{r}
+df %>%
+  count(Year)
+```
+
+We should note that there are `na`s in the data and the order is alphabetical.  We can change the datatype to fix this.
+
+```{r}
+df %>%
+  mutate(Year = factor(Year,levels  = c("FirstYear","Sophomore", "Junior", "Senior")))%>%
+  count(Year)
+```
+
+What if I want to look at GPA by grade level.
+
+```{r}
+df %>%
+  group_by(Year)%>%
+  summarise(avg = mean(GPA, na.rm = TRUE), std = sd(GPA, na.rm = TRUE))
+```
+
+
+## Wrangling Data With Base
+
+```{r}
+df$Year
+```
+
+##Data Noise
+
+```{r}
+x = c(1:10)
+y = x + rnorm(10)
+
+plot(x,y, main = "Noisy Data")
+```
+
+```{r}
+fit <- lm(y~x)
+
+plot(x,y, main = "Linear Fit")
+abline(fit)
+```
+
+```{r}
+f <- approxfun(x, y)
+curve(f(x), 0, 11, col = "green2")
+points(x, y)
+
+```
+
+```{r lagrange interpolation}
+lagrange <- function(x0, y0) {
+  f <- function (x) {
+    sum(y0 * sapply(seq_along(x0), \(j) {
+      prod(x - x0[-j])/prod(x0[j] - x0[-j])
+    }))
+  }
+  Vectorize(f, "x")
+} #https://stackoverflow.com/questions/73994021/lagrange-interpolation-formula-in-r-programming
+
+f <- lagrange(x,y)
+plot(x,y)
+curve(f, from = 1, to = 10, add = TRUE)
+```
