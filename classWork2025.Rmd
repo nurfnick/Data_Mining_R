@@ -12,7 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Loading Data
 
 ```{r}
-df <- read.csv("StudentSurveys.csv")
+df <- read.csv("https://raw.githubusercontent.com/nurfnick/Data_Mining_R/refs/heads/main/StudentSurveys.csv")
+
+head(df)
 ```
 
 
