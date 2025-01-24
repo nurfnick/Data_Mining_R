@@ -45,7 +45,7 @@ df %>%
 ```{r}
 df |>
   filter(Year == "Junior")|>
- # mutate(HigherSAT = (VerbalSAT > MathSAT))|>
+ # mutate(HigherSAT = if_else(VerbalSAT >= MathSAT, "Verbal", "Math"))|> #if the actual wasn't there
   count(HigherSAT)
 
 ```
