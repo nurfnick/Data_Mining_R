@@ -23,7 +23,7 @@ head(df)
 
 You should note that I added dplyr to the library above.  Following code gives me a frequency table.
 ```{r}
-df %>%
+df |>
   count(Year)
 ```
 
@@ -42,12 +42,18 @@ df %>%
   group_by(Year)%>%
   summarise(avg = mean(GPA, na.rm = TRUE), std = sd(GPA, na.rm = TRUE))
 ```
+```{r}
+df |>
+  filter(Year == "Junior")|>
+ # mutate(HigherSAT = (VerbalSAT > MathSAT))|>
+  count(HigherSAT)
 
+```
 
 ## Wrangling Data With Base
 
 ```{r}
-df$Year
+table(df[df$Year=="Junior","HigherSAT"])
 ```
 
 ##Data Noise
