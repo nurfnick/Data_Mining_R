@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+library(lubridate)
 ```
 
 # Data
@@ -70,6 +71,7 @@ fit <- lm(y~x)
 
 plot(x,y, main = "Linear Fit")
 abline(fit)
+
 ```
 
 ```{r}
@@ -92,4 +94,27 @@ lagrange <- function(x0, y0) {
 f <- lagrange(x,y)
 plot(x,y)
 curve(f, from = 1, to = 10, add = TRUE)
+```
+## Accuracy or Precision
+
+How would you model?  I would have two random variables describing my desired outcome.  One I would think of as the initial placement and the other the noise.  I would tune both based on how high I allowed the accuracy and precision to be respectively.
+```{r}
+n <- 5
+acc <- .1
+prec <- .1
+
+x<- rnorm(5,mean = 0, sd = acc)+rnorm(5,mean = 0, sd = prec)
+y<- rnorm(5,mean = 0, sd = acc)+rnorm(5,mean = 0, sd = prec)
+
+plot(x,y)#This doesn't work as well as I hoped...
+
+```
+
+# Data Types
+
+Look at the student set, explore the different picks.
+```{r}
+disney <- read.csv("disney.csv")
+
+weekdays(mdy(disney$Release.date..datetime.)[1])
 ```
