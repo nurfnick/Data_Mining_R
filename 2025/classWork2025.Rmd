@@ -110,7 +110,7 @@ plot(x,y)#This doesn't work as well as I hoped...
 
 ```
 
-# Data Types
+## Data Types
 
 Look at the student set, explore the different picks.
 ```{r}
@@ -118,3 +118,15 @@ disney <- read.csv("disney.csv")
 
 weekdays(mdy(disney$Release.date..datetime.)[1])
 ```
+
+## Statistics
+```{r}
+df |>
+  group_by(Year) |>
+  summarise("Aritmetic Mean" = mean(GPA, na.rm = TRUE), 
+            "Geometric Mean" = exp(mean(log(GPA), na.rm = TRUE)),
+            "Standard Deviation" = sd(GPA, na.rm = TRUE), 
+            "InterQuartile Range" = IQR(GPA, na.rm = TRUE)
+            )
+```
+
