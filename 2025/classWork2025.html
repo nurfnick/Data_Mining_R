@@ -11,7 +11,7 @@
 
 <meta name="author" content="Nicholas Jacob" />
 
-<meta name="date" content="2025-01-22" />
+<meta name="date" content="2025-01-31" />
 
 <title>Class Work</title>
 
@@ -352,742 +352,163 @@ display: none;
 
 <h1 class="title toc-ignore">Class Work</h1>
 <h4 class="author">Nicholas Jacob</h4>
-<h4 class="date">2025-01-22</h4>
+<h4 class="date">2025-01-31</h4>
 
 </div>
 
 
+<div id="data" class="section level1">
+<h1>Data</h1>
 <div id="loading-data" class="section level2">
 <h2>Loading Data</h2>
-<pre class="r"><code>df &lt;- read.csv(&quot;https://raw.githubusercontent.com/nurfnick/Data_Mining_R/refs/heads/main/StudentSurveys.csv&quot;)
+<pre class="r"><code>df &lt;- read.csv(&quot;StudentSurveys.csv&quot;)
 
-df</code></pre>
-<pre><code>##          Year Gender Smoke   Award HigherSAT Exercise TV Height Weight Siblings
-## 1      Senior      M    No Olympic      Math     10.0  1     71    180        4
-## 2   Sophomore      F   Yes Academy      Math      4.0  7     66    120        2
-## 3   FirstYear      M    No   Nobel      Math     14.0  5     72    208        2
-## 4      Junior      M    No   Nobel      Math      3.0  1     63    110        1
-## 5   Sophomore      F    No   Nobel    Verbal      3.0  3     65    150        1
-## 6   Sophomore      F    No   Nobel    Verbal      5.0  4     65    114        2
-## 7   FirstYear      F    No Olympic      Math     10.0 10     66    128        1
-## 8   Sophomore      M    No Olympic      Math     13.0  8     74    235        1
-## 9      Junior      F    No   Nobel    Verbal      3.0  6     61     NA        2
-## 10  FirstYear      F    No   Nobel      Math     12.0  1     60    115        7
-## 11  Sophomore      F    No Olympic      Math     12.0  6     65    140        1
-## 12  FirstYear      M    No Olympic      Math     10.0  5     63    200        2
-## 13  Sophomore      M    No Olympic      Math     12.0  8     68    162        3
-## 14     Junior      F    No   Nobel    Verbal      6.0  1     68    135        2
-## 15  FirstYear      M    No   Nobel    Verbal      9.0  5     68    193        1
-## 16  FirstYear      F    No Olympic      Math     10.0  2     63    110        1
-## 17  FirstYear      F    No Olympic    Verbal      3.0 15     63     99        2
-## 18  Sophomore      M    No   Nobel    Verbal      7.0  3     72    165        2
-## 19  Sophomore      F    No   Nobel      Math      2.0  1     62    120        1
-## 20  Sophomore      F    No Olympic    Verbal     14.0  2     67    154        1
-## 21  Sophomore      F    No   Nobel      Math     10.0  5     65    110        1
-## 22  Sophomore      F    No   Nobel      Math     14.0  2     68    145        8
-## 23  FirstYear      M    No Olympic      Math     20.0 20     73    195        3
-## 24  Sophomore      M    No Olympic      Math      7.0 10     74    200        1
-## 25  Sophomore      M    No Olympic      Math     12.0  3     70    167        1
-## 26  Sophomore      M    No   Nobel      Math     10.0  5     71    175        3
-## 27  Sophomore      F    No Academy    Verbal      6.0  8     67    155        1
-## 28     Junior      M    No   Nobel      Math     14.0  2     74    185        1
-## 29  FirstYear      M    No Olympic      Math     12.0  6     68    190        1
-## 30     Senior      M    No Olympic    Verbal     10.0  4     72    165        1
-## 31     Junior      M    No Academy      Math      8.0  8     62    175        2
-## 32  Sophomore      F    No   Nobel      Math      0.0  2     66    126        5
-## 33  FirstYear      M    No Olympic      Math     10.0 20     70    187        3
-## 34     Senior      M    No   Nobel    Verbal      6.0 10     72    170        2
-## 35  FirstYear      F    No Olympic      Math      5.0  2     67    158        4
-## 36  Sophomore      F    No Olympic      Math     24.0  5     62    119        1
-## 37  FirstYear      M    No Olympic      Math      2.0  5     73    205        1
-## 38  Sophomore      F    No Academy      Math     10.0  5     67    129        1
-## 39  Sophomore      F    No Academy    Verbal      6.0  5     67    145        0
-## 40     Junior      F    No   Nobel    Verbal      5.0  5     64    130        0
-## 41     Senior      M    No   Nobel    Verbal      5.0  5     72    215        3
-## 42  Sophomore      F    No   Nobel    Verbal     12.0  4     64    135        2
-## 43  Sophomore      F    No Olympic    Verbal      2.0  5     70    145        0
-## 44  FirstYear      F    No Olympic      Math      7.0  8     60     98        2
-## 45  FirstYear      M    No Olympic      Math     15.0  2     71    150        1
-## 46     Junior      M    No Olympic    Verbal      5.0 14     73    159        1
-## 47     Senior      M    No Olympic    Verbal      7.0 20     72    174        1
-## 48  Sophomore      M    No Olympic      Math     15.0 20     74    160        1
-## 49     Senior      M    No Olympic      Math      8.0 10     70    165        1
-## 50  Sophomore      F    No Olympic      Math     14.0  3     69    161        1
-## 51  FirstYear      M    No Olympic    Verbal     14.0  1     68    160        2
-## 52     Senior      F    No   Nobel      Math      4.0 14     64    130        2
-## 53     Junior      M    No Olympic      Math     15.0  0     72    175        2
-## 54     Senior      M    No Olympic      Math      4.0 20     70    255        2
-## 55     Junior      M    No Olympic    Verbal     15.0  2     65    160        4
-## 56  FirstYear      M    No Academy    Verbal      3.0  6     72    160        0
-## 57     Junior      F    No Academy      Math      3.0 15     63     95        0
-## 58  Sophomore      F    No Olympic      Math     15.0  3     64    115        2
-## 59  Sophomore      F    No Academy      Math     20.0  2     64    120        1
-## 60  FirstYear      F    No   Nobel    Verbal      3.0  1     65    135        2
-## 61  Sophomore      M    No Academy      Math      6.0  7     73    180        1
-## 62     Senior      M    No   Nobel      Math     12.0  7     71    155        0
-## 63  FirstYear      F    No Olympic    Verbal      4.0  3     66    110        2
-## 64  FirstYear      M    No Olympic    Verbal     20.0 12     73    215        2
-## 65  FirstYear      M    No Olympic      Math     15.0  6     70    175        2
-## 66  Sophomore      F    No Olympic      Math     10.0  3     65    140        3
-## 67  FirstYear      M    No Olympic    Verbal     10.0 20     72    195        2
-## 68  Sophomore      M    No   Nobel    Verbal      4.0  8     73    185        2
-## 69  Sophomore      M    No   Nobel    Verbal      9.0  0     70    185        2
-## 70     Senior      M    No Olympic    Verbal     12.0 12     79    209        1
-## 71     Senior      F    No Olympic      Math      2.0  6     67    145        3
-## 72  Sophomore      F    No Olympic    Verbal     15.0  4     66    140        1
-## 73  FirstYear      F    No   Nobel    Verbal     10.0  4     66    146        1
-## 74  FirstYear      F    No Olympic    Verbal      7.0  6     68    130        2
-## 75  Sophomore      F    No   Nobel      Math      3.0  5     67    140        1
-## 76  FirstYear      F    No Olympic    Verbal      4.0  3     66    130        1
-## 77  FirstYear      F    No Olympic               15.0  3     66    140        1
-## 78  Sophomore      F    No Olympic      Math      8.0  8     65    160        3
-## 79  Sophomore      F    No   Nobel      Math      5.0  8     66    120        1
-## 80  Sophomore      M    No Academy      Math     10.0 20     76    150        1
-## 81  Sophomore      M    No Olympic      Math     15.0  5     69    155        1
-## 82  FirstYear      F    No Olympic      Math      4.0  4     64    128        3
-## 83  FirstYear      F    No Olympic      Math      5.0  4     64    143        2
-## 84     Junior      F    No   Nobel    Verbal      6.0  3     65    155        2
-## 85  FirstYear      F    No Olympic      Math     18.0  2     67    119        2
-## 86  Sophomore      F    No Academy      Math     16.0  4     66    138        1
-## 87     Senior      M    No Academy    Verbal      4.0  5     72    240        1
-## 88  FirstYear      F    No   Nobel    Verbal      3.0  2     65    160        1
-## 89  FirstYear      M    No Olympic    Verbal     20.0  3     69    191        3
-## 90  FirstYear      M    No   Nobel      Math      5.0  8     69    165        5
-## 91  Sophomore      M    No Olympic      Math     10.0  6     73    200        2
-## 92  FirstYear      F    No Olympic    Verbal      2.0  4     62    125        1
-## 93  Sophomore      F    No   Nobel    Verbal      4.0  5     69    140        2
-## 94  Sophomore      M    No   Nobel      Math     14.0  5     73    206        1
-## 95  FirstYear      M    No   Nobel      Math      7.0  5     76    275        1
-## 96  Sophomore      M    No Olympic      Math     12.0  8     70    142        1
-## 97  Sophomore      F    No   Nobel    Verbal     14.0  2     67    140        6
-## 98  Sophomore      M    No   Nobel    Verbal      3.0 10     68    145        5
-## 99  Sophomore      M    No   Nobel      Math      5.0  4     72    128        1
-## 100 FirstYear      M    No Olympic      Math     15.0  5     74    165        1
-## 101    Senior      F    No   Nobel    Verbal      5.0 20     62    140        1
-## 102 Sophomore      F    No   Nobel      Math      4.0 14     69    130        1
-## 103 FirstYear      M    No   Nobel      Math      8.0  2     70    170        3
-## 104 Sophomore      M    No Olympic      Math     14.0  4     69    160        2
-## 105 Sophomore      M    No Olympic      Math      5.0  8     72    165        2
-## 106                F    No Olympic    Verbal     12.0  7     78    145        1
-## 107 Sophomore      M    No Olympic      Math     15.0  5     67    155        1
-## 108 Sophomore      M    No Olympic      Math      3.0  3     73    155        3
-## 109 Sophomore      F    No   Nobel      Math     12.0  1     63    113        1
-## 110 Sophomore      M    No Olympic      Math     12.0  5     70    155        1
-## 111 Sophomore      M    No   Nobel      Math      6.0 20     NA    173        1
-## 112 Sophomore      M    No   Nobel      Math      2.0  8     65    195        2
-## 113 Sophomore      F    No   Nobel    Verbal      3.0  3     73    120        1
-## 114 FirstYear      M    No Olympic      Math     24.0  6     78    225        2
-## 115 FirstYear      F    No   Nobel    Verbal      3.0  1     65    160        1
-## 116 Sophomore      F    No   Nobel    Verbal      6.0  1     63    120        2
-## 117 Sophomore      F    No   Nobel    Verbal     12.0 10     68    138        1
-## 118 Sophomore      M    No   Nobel               18.0  3     72    260        2
-## 119 Sophomore      M    No   Nobel      Math      2.0  7     70    150        2
-## 120 FirstYear      F    No   Nobel    Verbal     12.0  3     67    135        3
-## 121 Sophomore      F    No   Nobel    Verbal      5.0 10     72    165        1
-## 122 FirstYear      M    No Olympic      Math      3.0  3     68    142        3
-## 123 Sophomore      M    No   Nobel    Verbal      3.0  3     78    210        6
-## 124 Sophomore      M    No Olympic      Math     21.0 25     69    171        1
-## 125 Sophomore      F    No Olympic    Verbal     12.0  2     80    150        4
-## 126 Sophomore      M    No Olympic      Math      3.0 15     71    188        3
-## 127 Sophomore      M    No   Nobel    Verbal     20.0  6     70    195        0
-## 128 FirstYear      M    No Olympic      Math      8.0 13     75    230        2
-## 129 Sophomore      F    No Olympic    Verbal      2.0  3     64    140        2
-## 130 Sophomore      M    No   Nobel    Verbal     15.0  2     78    200        1
-## 131    Senior      F    No   Nobel      Math      6.0  5     68    140        0
-## 132 FirstYear      F    No   Nobel    Verbal      2.0  1     69    180        5
-## 133 Sophomore      F    No   Nobel      Math      1.0  4     63    160        1
-## 134 Sophomore      F    No Olympic    Verbal     13.0  5     64    135        3
-## 135 Sophomore      F    No   Nobel      Math     12.0 10     63    140        2
-## 136 Sophomore      F    No Olympic      Math     10.0  4     72    155        2
-## 137 Sophomore      M    No   Nobel      Math     10.0  3     63    235        5
-## 138 FirstYear      F    No Olympic      Math     10.0  2     63    140        3
-## 139 Sophomore      F    No   Nobel    Verbal      3.0  4     68    130        2
-## 140    Junior      F    No Olympic      Math      2.0  3     67    125        5
-## 141 FirstYear      M    No Olympic      Math     10.0  3     71    222        1
-## 142 FirstYear      F    No Academy    Verbal      4.0  3     65    128        3
-## 143 FirstYear      M    No Olympic      Math      8.0  2     72    183        2
-## 144    Junior      M    No Olympic    Verbal     18.0 20     75    175        0
-## 145 FirstYear      F    No   Nobel    Verbal      5.0  3     59    125        1
-## 146 Sophomore      F    No Academy      Math      4.0  4     69    156        1
-## 147 FirstYear      F    No Olympic      Math     20.0  3     63    145        3
-## 148 Sophomore      M    No Olympic      Math     14.0  4     74    195        4
-## 149 Sophomore      M    No Olympic      Math      8.0 13     70    185        2
-## 150 FirstYear      F    No   Nobel      Math      4.0  5     64    150        1
-## 151 Sophomore      F    No   Nobel      Math      5.0  5     67    140        0
-## 152 FirstYear      M    No Olympic    Verbal     14.0  4     66    150        1
-## 153 FirstYear      F    No   Nobel      Math      4.0  3     67    150        0
-## 154 Sophomore      M    No   Nobel      Math      4.0 10     73    220        1
-## 155    Senior      M    No Olympic    Verbal     15.0 10     71    195        2
-## 156 Sophomore      F    No Olympic      Math     12.0  7     66    140        1
-## 157 FirstYear      F    No Academy      Math     10.0 10     68    135        2
-## 158 Sophomore      F    No Olympic    Verbal      6.0  3     67    138        1
-## 159    Senior      F    No Olympic    Verbal     12.0  5     69    170        2
-## 160 Sophomore      F    No Olympic    Verbal     10.0  2     66    145        1
-## 161 FirstYear      M    No Olympic    Verbal     14.0  5     68    135        2
-## 162 FirstYear      F    No   Nobel    Verbal      5.0  4     68    140        0
-## 163 Sophomore      M    No Olympic      Math     18.0  5     71    155        2
-## 164    Senior      M    No Olympic      Math     10.0 10     70    155        1
-## 165 Sophomore      M    No Olympic    Verbal      8.0  2     66    155        1
-## 166 Sophomore      F    No   Nobel    Verbal      8.0 10     65    135        2
-## 167    Junior      M    No   Nobel    Verbal      3.0 15     70    165        1
-## 168 FirstYear      M    No Academy      Math      5.0 20     71    160        2
-## 169 Sophomore      M    No   Nobel    Verbal      4.0 21     71    175        1
-## 170 Sophomore      M    No Olympic      Math      8.0 10     70    183        3
-## 171 Sophomore      F    No   Nobel    Verbal      3.0 10     65    140        2
-## 172 Sophomore      F    No   Nobel    Verbal     12.0  4     67    140        1
-## 173    Junior      F    No   Nobel      Math      5.0 10     61    110        2
-## 174 Sophomore      F    No   Nobel    Verbal      5.0  3     68    125        0
-## 175    Senior      F    No Olympic    Verbal     15.0  2     65    125        2
-## 176 FirstYear      M    No Olympic      Math     10.0  7     70    180        2
-## 177 Sophomore      M    No Olympic      Math     10.0 10     72    195        2
-## 178 Sophomore      F    No Academy      Math     10.0  6     66    128        3
-## 179 FirstYear      M    No Olympic      Math     14.0  2     71    172        1
-## 180 Sophomore      F    No Olympic      Math      6.0  4     64    150        1
-## 181 Sophomore      M    No Olympic      Math      4.0 27     73    188        1
-## 182 Sophomore      F    No Olympic    Verbal     14.0  2     60    110        2
-## 183 Sophomore      F    No Olympic      Math      5.0 15     64    125        1
-## 184 Sophomore      F    No Olympic      Math     16.0 10     65    135        3
-## 185 FirstYear      F    No Olympic    Verbal     14.0  3     65    130        2
-## 186 Sophomore      M    No Olympic      Math     10.0 10     73    230        2
-## 187 Sophomore      M    No   Nobel      Math     11.0 10     69    198        1
-## 188 Sophomore      F    No Olympic                4.0 10     66    127        1
-## 189 Sophomore      M    No Olympic      Math     12.0  5     66    150        1
-## 190 Sophomore      M    No Olympic      Math      5.0  4     73    175        3
-## 191    Junior      M    No   Nobel      Math      8.0 14     71    160        3
-## 192    Junior      F    No   Nobel      Math      8.0  6     65    140        2
-## 193 Sophomore      M    No   Nobel    Verbal      3.0  5     75    200        1
-## 194 Sophomore      F    No   Nobel      Math      8.0  2     63    130        1
-## 195 Sophomore      M    No Olympic      Math     20.0 14     74    210        3
-## 196 Sophomore      M    No Olympic      Math     10.0  5     70    210        2
-## 197 Sophomore      F    No   Nobel      Math      3.0  3     63    145        4
-## 198 Sophomore      M    No Olympic      Math      4.0  6     75    156        3
-## 199 FirstYear      M    No Olympic      Math      8.0 10     71    207        0
-## 200 FirstYear      F    No Olympic      Math     15.0  5     68    150        1
-## 201 Sophomore      F    No Olympic    Verbal     14.0 10     68    137        2
-## 202 FirstYear      M    No Olympic      Math     14.0  2     72    153        2
-## 203    Junior      F    No   Nobel      Math     12.0  5     63    175        2
-## 204 Sophomore      F    No   Nobel      Math      6.0  2     65    136        3
-## 205 Sophomore      F    No   Nobel    Verbal      3.0 10     65    104        2
-## 206 FirstYear      F    No Olympic      Math     12.0  3     67    122        3
-## 207 Sophomore      M    No   Nobel      Math      5.0 40     72    192        1
-## 208 FirstYear      M    No Olympic      Math      8.0 10     71    218        1
-## 209 Sophomore      M    No   Nobel      Math      1.0 14     68    170        4
-## 210 FirstYear      M    No   Nobel    Verbal     10.0  4     72    220        2
-## 211 Sophomore      F    No Academy      Math      7.0  2     64    150        1
-## 212    Senior      M    No Olympic    Verbal      5.0  7     71    135        4
-## 213    Senior      F    No   Nobel      Math     10.0  2     62    155        1
-## 214 Sophomore      F    No Olympic      Math     12.0  5     65    135        1
-## 215 Sophomore      M    No Olympic      Math     15.0 15     68    140        1
-## 216 FirstYear      F    No Olympic    Verbal     10.0  5     67    120        1
-## 217 Sophomore      F    No Olympic      Math      7.0 12     68    135        3
-## 218 Sophomore      F    No   Nobel      Math       NA  4     64    135        1
-## 219 Sophomore      M    No   Nobel      Math     15.0  0     72    165        2
-## 220    Junior      M    No Olympic      Math     10.0 15     71    180        1
-## 221 Sophomore      M    No Olympic      Math     15.0  0     72    165        2
-## 222 Sophomore      M    No Olympic      Math     12.0  6     72    175        2
-## 223 Sophomore      M    No Olympic      Math     10.0  5     71    200        1
-## 224 Sophomore      M    No   Nobel    Verbal     12.0 10     71    138        0
-## 225    Senior      M    No Olympic      Math      5.0  3     71    265        1
-## 226 Sophomore      F    No Academy      Math     14.0 16     61    105        1
-## 227 Sophomore      F    No   Nobel      Math      3.0  9     68    130        3
-## 228 Sophomore      M    No Olympic    Verbal     12.0  2     70    165        1
-## 229 Sophomore      F    No   Nobel    Verbal     15.0  5     67    145        1
-## 230 FirstYear      F    No Academy      Math      3.0  6     64    138        1
-## 231 Sophomore      F    No Olympic    Verbal     25.0 12     71    193        2
-## 232 Sophomore      M    No   Nobel      Math      5.0  1     71    170        1
-## 233 Sophomore      M    No   Nobel    Verbal      6.0  0     69    155        1
-## 234 Sophomore      M    No Olympic      Math     27.0  2     70    155        1
-## 235    Junior      F    No   Nobel    Verbal      8.0 10     65    140        2
-## 236 Sophomore      F    No   Nobel    Verbal      3.0  1     65    130        1
-## 237 Sophomore      M    No Olympic    Verbal     17.0 14     72    180        3
-## 238 FirstYear      M    No Olympic    Verbal     40.0  2     67    140        2
-## 239 Sophomore      M    No Academy      Math      5.0 10     74    210        1
-## 240 Sophomore      M    No   Nobel    Verbal      0.0  7     NA    150        0
-## 241 Sophomore      F    No   Nobel    Verbal     27.0  2     62    115        1
-## 242 Sophomore      M    No   Nobel    Verbal      3.0  5     75    225        3
-## 243 FirstYear      M    No Academy      Math      3.0  7     67    170        2
-## 244 Sophomore      F    No Olympic    Verbal     11.0 20     63    120        0
-## 245    Senior      M    No   Nobel    Verbal      2.0  4     71    170        1
-## 246 Sophomore      F    No Academy    Verbal      9.0  1     63    130        2
-## 247 FirstYear      M    No   Nobel      Math     12.0  8     70    182        1
-## 248 Sophomore      M    No   Nobel    Verbal     15.0  2     67    138        1
-## 249 Sophomore      M    No   Nobel      Math      2.0  5     74    180        2
-## 250 Sophomore      M    No Olympic      Math     20.0  6     69    230        0
-## 251    Junior      M    No Olympic      Math     12.0  5     70    222        2
-## 252 FirstYear      M    No Academy    Verbal      5.0  2     70    145        4
-## 253 Sophomore      M    No   Nobel      Math     10.0  4     70    150        1
-## 254    Senior      M    No   Nobel    Verbal      2.0  2     68    190        0
-## 255 Sophomore      M    No Olympic    Verbal     12.0 20     76    195        3
-## 256 Sophomore      F    No   Nobel    Verbal      5.0  2     59    115        1
-## 257    Junior      F    No Olympic    Verbal      3.0  1     66    140        1
-## 258 Sophomore      M    No   Nobel    Verbal     12.0 10     68    155        1
-## 259 Sophomore      M    No   Nobel      Math      8.0  3     72    150        2
-## 260 Sophomore      M    No Academy      Math      8.0  4     69    155        2
-## 261 Sophomore      M    No   Nobel    Verbal      5.0  3     NA    130        2
-## 262 FirstYear      M    No Olympic      Math      6.0 14     75    210        3
-## 263                F    No   Nobel    Verbal      8.0 10     63    105        3
-## 264    Junior      M    No Olympic               10.0 10     71    192        1
-## 265 FirstYear      F    No Olympic      Math     18.0  3     72    220        3
-## 266    Junior      F    No   Nobel    Verbal     12.0  0     64    134        1
-## 267 Sophomore      M    No Olympic      Math     10.0  5     68    160        1
-## 268    Junior      M    No   Nobel    Verbal     10.0  5     68    135        1
-## 269 Sophomore      M    No Olympic    Verbal      5.0  2     67    140        1
-## 270 Sophomore      F    No Olympic    Verbal      7.0  2     66    135        0
-## 271 FirstYear      M    No Olympic      Math      3.0  5     74    145        1
-## 272 FirstYear      F    No Olympic    Verbal      7.0  4     64    140        2
-## 273 Sophomore      F    No   Nobel      Math      3.0  2     NA     NA        2
-## 274 Sophomore      F    No Academy    Verbal      4.0  3     65    138        2
-## 275 FirstYear      F    No   Nobel    Verbal      8.0  4     64     NA        2
-## 276 Sophomore      F    No Olympic    Verbal      7.0  5     64    130        2
-## 277    Senior      M    No   Nobel      Math      7.0  9     72    210        2
-## 278    Senior      M    No   Nobel    Verbal      3.0  1     69    233        1
-## 279 FirstYear      F    No Olympic      Math      7.0  7     70    180        6
-## 280 FirstYear      M    No Olympic      Math     14.0  6     67    185        1
-## 281 Sophomore      M    No Olympic    Verbal      5.0  6     76    189        3
-## 282 FirstYear      F    No Olympic      Math     14.0  5     66    127        1
-## 283    Senior      M    No   Nobel      Math      5.0  4     63    135        1
-## 284 Sophomore      F    No Academy    Verbal      5.0  5     66    140        0
-## 285 Sophomore      F    No   Nobel      Math      2.0 20     68    162        2
-## 286 Sophomore      F    No   Nobel    Verbal      1.0  3     67    215        0
-## 287    Senior      M    No Olympic      Math     15.0  5     73    200        2
-## 288 Sophomore      F    No   Nobel    Verbal      5.0  1     62    120        1
-## 289 FirstYear      M    No   Nobel      Math      5.0  2     67    165        3
-## 290 FirstYear      M    No Olympic    Verbal     15.0 14     71    175        2
-## 291 Sophomore      F    No Olympic    Verbal      5.0  3     66    160        2
-## 292 Sophomore      M    No   Nobel    Verbal     20.0  0     68    145        1
-## 293    Junior      F    No Academy      Math      3.0  5     60    180        3
-## 294 FirstYear      F    No   Nobel    Verbal      7.0  0     71    170        1
-## 295 Sophomore      M    No Olympic      Math     20.0 10     75    235        2
-## 296 Sophomore      F    No Olympic               10.0 10     65    155        1
-## 297    Senior      M    No   Nobel      Math      6.0 15     65    140        3
-## 298 Sophomore      F    No Olympic      Math      6.0  1     66    145        2
-## 299 FirstYear      M    No   Nobel    Verbal     10.0  3     71    175        2
-## 300 Sophomore      M    No Olympic      Math      9.0  6     76    210        2
-## 301 FirstYear      F    No Olympic    Verbal      1.5 20     67    130        1
-## 302 Sophomore      M    No Olympic      Math     20.0 28     72    195        1
-## 303 Sophomore      M    No   Nobel      Math      8.0  3     67    165        1
-## 304 Sophomore      M    No Olympic    Verbal     21.0  1     73    180        6
-## 305 Sophomore      F    No Olympic    Verbal     10.0  5     60    145        1
-## 306 Sophomore      M    No   Nobel      Math      8.0 12     70    163        2
-## 307    Junior      M    No Olympic    Verbal     10.0  1     75    160        1
-## 308    Junior      F    No Olympic               18.0  7     67    150        1
-## 309 Sophomore      M    No Olympic      Math     15.0  6     71    170        3
-## 310 Sophomore      F    No   Nobel    Verbal      8.0  5     NA    110        3
-## 311    Senior      M    No   Nobel      Math      6.0  2     66    170        1
-## 312 Sophomore      M    No Olympic      Math     12.0  3     69    145        2
-## 313 FirstYear      F    No Olympic    Verbal     10.0  4     69    160        1
-## 314    Junior      F    No Academy      Math      7.0  4     63    130        1
-## 315 Sophomore      F    No Olympic      Math      5.0  5     65    155        1
-## 316 FirstYear      F    No Academy    Verbal      6.0  4     65     NA        1
-## 317    Senior      M    No   Nobel    Verbal      5.0  5     72    160        2
-## 318 Sophomore      F    No   Nobel    Verbal      5.0  5     66    151        1
-## 319 Sophomore      M    No Olympic    Verbal     30.0 10     74    180        1
-## 320    Senior      F    No Olympic      Math      5.0  4     64    130        2
-## 321    Junior      M   Yes   Nobel      Math     12.0  5     75    185        1
-## 322    Senior      M   Yes   Nobel    Verbal      0.0  1     73    198        1
-## 323 FirstYear      M   Yes Olympic    Verbal     12.0  5     72    175        2
-## 324    Senior      F   Yes   Nobel      Math      0.0 14     67    123        1
-## 325    Junior      F   Yes   Nobel      Math     15.0 10     64    145        1
-## 326 FirstYear      M   Yes Olympic      Math     18.0 15     67    190        0
-## 327 Sophomore      F   Yes Olympic      Math     12.0  5     65    130        2
-## 328 Sophomore      M   Yes   Nobel    Verbal      2.0  3     70    185        4
-## 329 FirstYear      M   Yes Olympic      Math     12.0 20     68    165        1
-## 330 Sophomore      M   Yes Academy      Math      3.0  5     70    165        3
-## 331    Junior      M   Yes Olympic      Math      3.0  3     67    150        2
-## 332 FirstYear      M   Yes   Nobel      Math      4.0  3     72    160        1
-## 333    Junior      F   Yes Olympic      Math     12.0  2     64    142        3
-## 334 FirstYear      M   Yes Olympic    Verbal     25.0  5     72    165        1
-## 335    Junior      M   Yes   Nobel    Verbal      3.0  4     75    175        0
-## 336 Sophomore      M   Yes Olympic      Math      6.0  6     69    175        2
-## 337 Sophomore      F   Yes Olympic    Verbal      7.0  8     68    190        1
-## 338 Sophomore      M   Yes   Nobel    Verbal      7.0  2     72    180        2
-## 339 Sophomore      M   Yes   Nobel                6.0  2     74    185        1
-## 340 Sophomore      M   Yes   Nobel    Verbal      6.0  2     NA     NA        1
-## 341 Sophomore      F   Yes Olympic    Verbal     13.0  4     64    135        3
-## 342 Sophomore      M   Yes Olympic    Verbal     25.0  8     73    195        1
-## 343    Senior      M   Yes Olympic      Math      8.0 12     71    175        0
-## 344 Sophomore      M   Yes Olympic      Math      5.0  5     70    165        1
-## 345 FirstYear      M   Yes   Nobel      Math     11.0  6     68    135        1
-## 346 Sophomore      F   Yes   Nobel    Verbal     18.0  5     69    140        1
-## 347 Sophomore      M   Yes Olympic      Math     10.0 NA     NA    182        2
-## 348 FirstYear      M   Yes Olympic      Math      6.0 14     72    155        1
-## 349 FirstYear      F   Yes   Nobel    Verbal      2.0  1     68    180        2
-## 350    Senior      M   Yes   Nobel      Math      5.0 25     69    170        1
-## 351 Sophomore      F   Yes Olympic      Math      5.0  3     66    135        3
-## 352 FirstYear      M   Yes Olympic      Math      6.0 25     72    165        2
-## 353 Sophomore      F   Yes   Nobel      Math     10.0 10     65    137        0
-## 354 Sophomore      M   Yes   Nobel      Math      4.0  1     70    147        2
-## 355    Senior      F   Yes Olympic      Math      5.0  4     66    150        1
-## 356    Junior      F   Yes   Nobel      Math     17.0  2     67    155        2
-## 357 Sophomore      M   Yes   Nobel    Verbal      7.0 10     71    160        2
-## 358 Sophomore      F   Yes   Nobel    Verbal      2.0  0     83    130        1
-## 359 Sophomore      M   Yes Olympic      Math      8.0 10     61    180        2
-## 360 Sophomore      F   Yes   Nobel    Verbal      1.0  1     65    150        2
-## 361 FirstYear      M   Yes Olympic    Verbal     14.0  5     77    205        2
-## 362 Sophomore      F   Yes Olympic      Math     12.0  5     60    115        0
-##     BirthOrder VerbalSAT MathSAT  SAT  GPA Pulse Piercings
-## 1            4       540     670 1210 3.13    54         0
-## 2            2       520     630 1150 2.50    66         3
-## 3            1       550     560 1110 2.55   130         0
-## 4            1       490     630 1120 3.10    78         0
-## 5            1       720     450 1170 2.70    40         6
-## 6            2       600     550 1150 3.20    80         4
-## 7            1       640     680 1320 2.77    94         8
-## 8            1       660     710 1370 3.30    77         0
-## 9            2       550     550 1100 2.80    60         7
-## 10           8       670     700 1370 3.70    94         2
-## 11           2       500     670 1170 2.09    63         2
-## 12           2       580     600 1180   NA    72         0
-## 13          NA       530     620 1150 2.90    54         0
-## 14           3       650     650 1300 3.08    66         4
-## 15           1       700     650 1350   NA    72         0
-## 16           2       590     610 1200 3.86    59         4
-## 17           1       600     600 1200 3.00    88         4
-## 18           1       700     650 1350 3.00    59         0
-## 19           1       610     800 1410 3.35    64         2
-## 20           2       550     450 1000 3.30    72         5
-## 21           2       550     640 1190 3.40    74         2
-## 22           8       560     570 1130 2.90    70         2
-## 23           4       560     620 1180 3.50    58         0
-## 24           2       550     650 1200 3.00    48         0
-## 25           2       550     680 1230 3.30    74         0
-## 26           2       700     720 1420 3.70    60         0
-## 27           1       610     590 1200 3.48    74         2
-## 28           2       570     580 1150 3.40    70         0
-## 29           1       550     560 1110 2.50    74         0
-## 30           2       500     500 1000 3.30    60         0
-## 31           3       610     620 1230 3.50    55         0
-## 32           6       610     650 1260 3.79    82         1
-## 33           2       500     560 1060 3.30    68         0
-## 34           2       640     640 1280 2.90    83         0
-## 35           2       490     520 1010 2.68    53         2
-## 36           2       560     580 1140 3.28    72         4
-## 37           1       560     640 1200 3.51    86         0
-## 38           1       470     600 1070 2.60    67         4
-## 39           1       680     670 1350 3.85    89         2
-## 40          NA       570     570 1140 2.40    48         4
-## 41           1       630     590 1220 3.40    64         0
-## 42           3       580     540 1120 2.40    73         7
-## 43           1       550     500 1050 3.00    80         2
-## 44           2       490     550 1040 3.10    85         5
-## 45           1       590     650 1240 2.94    60         0
-## 46           1       620     620 1240 3.31    61         0
-## 47           2       560     550 1110 3.30    80         0
-## 48           2       630     690 1320 2.90    70         0
-## 49           2       600     630 1230 3.40    61         0
-## 50           2       550     650 1200 3.16    58         2
-## 51           1       590     580 1170   NA    42         0
-## 52           2       640     730 1370 3.84    88         4
-## 53           1       650     670 1320 3.60    68         1
-## 54           2       420     520  940 2.36    68         0
-## 55           4       500     480  980 2.90    35         0
-## 56           1       620     600 1220 3.00    90         0
-## 57           1       600     660 1260 3.30    88         4
-## 58           2       580     680 1260 3.70    67         2
-## 59           1       490     520 1010 2.90    71         2
-## 60           3       630     620 1250 3.60    68         2
-## 61           2       600     670 1270 3.56    73         0
-## 62           1       590     610 1200 3.70    55         2
-## 63           1       550     520 1070 4.00    78         5
-## 64           3       600     600 1200 3.40    96         0
-## 65           3       500     540 1040   NA    63         0
-## 66           4       600     650 1250 3.30    73         5
-## 67           2       600     600 1200 3.10    60         1
-## 68           1       650     530 1180 2.50    80         0
-## 69           1       650     650 1300 3.20    96         0
-## 70           1       560     520 1080 3.10    49         0
-## 71           2       540     640 1180 3.50    62         5
-## 72           1       640     600 1240 3.00    68         6
-## 73           2       690     620 1310 3.25    52         5
-## 74           1       600     580 1180 2.40    71         2
-## 75           2       610     650 1260 3.22    72         2
-## 76           1       610     420 1030   NA    65         1
-## 77           1       600     600 1200   NA    90         0
-## 78           3       580     640 1220 3.64    77         4
-## 79           1       560     580 1140 3.50    68         2
-## 80           1       620     680 1300 2.50    60         0
-## 81           1       620     660 1280 3.40    65         0
-## 82           1       630     650 1280   NA    60         2
-## 83           2       430     610 1040 3.25    84         3
-## 84           1       640     640 1280 3.70    80         7
-## 85           1       490     590 1080 2.10    66         1
-## 86           2       550     560 1110 2.80    70         7
-## 87           1       690     550 1240 3.49    70         0
-## 88           1       550     550 1100 3.83    72         3
-## 89           1       600     580 1180   NA    66         0
-## 90           4       530     610 1140 2.70    69         0
-## 91           3       520     620 1140 2.80    89         0
-## 92           1       660     520 1180 3.13    79         2
-## 93           3       800     680 1480 3.62    98         4
-## 94           1       560     660 1220 2.00    48         0
-## 95           2       610     640 1250 3.60    71         0
-## 96           2       660     680 1340 4.00    51         0
-## 97           7       650     550 1200 3.10    67         2
-## 98           6       680     570 1250 2.60    66         0
-## 99           1       550     600 1150 3.70    66         0
-## 100          1       660     710 1370 3.57    60         0
-## 101          1       650     550 1200 2.90    77         2
-## 102          2       620     630 1250 3.15    80         2
-## 103          2       530     590 1120 3.88    70         0
-## 104          2       670     720 1390 3.50    65         0
-## 105          2       640     710 1350 2.80    57         0
-## 106          1       680     640 1320   NA    37         4
-## 107          2       670     700 1370 2.90    84         0
-## 108          2       730     740 1470 3.21    56         0
-## 109          2       580     600 1180 3.50    69         4
-## 110          2       610     640 1250 3.33    62         0
-## 111          1       580     680 1260 3.00    79         0
-## 112          1       620     630 1250 3.50    55         0
-## 113          1       680     670 1350 3.95    89         0
-## 114          1       570     670 1240 2.10    78         0
-## 115          2       500     450  950 3.00    83         5
-## 116          1       800     750 1550 3.00    58         3
-## 117          2       610     540 1150 3.75    77         4
-## 118          3       550     550 1100 2.50    50         1
-## 119          3       600     620 1220 3.40    87         0
-## 120          4       660     550 1210 3.40    74         7
-## 121          1       640     560 1200 3.14    76         7
-## 122          4       560     580 1140 2.60    50         0
-## 123          5       600     600 1200 3.40    70         0
-## 124          1       480     530 1010 2.70    84         0
-## 125          1       650     600 1250 3.15    68         2
-## 126          1       520     600 1120 2.20    66         0
-## 127          1       640     640 1280 3.50    76         0
-## 128          1       610     620 1230 2.90    65         0
-## 129          3       450     400  850 2.50    65         4
-## 130          1       700     600 1300 3.50    68         0
-## 131          1       540     680 1220 3.60    78         2
-## 132          3       550     540 1090 3.10    74         2
-## 133          1       640     680 1320 3.00    76         4
-## 134          2       560     540 1100 3.00    79         5
-## 135          3       530     700 1230 3.80    81         4
-## 136          1       620     650 1270 3.15    56         2
-## 137          3       550     560 1110 2.75    48         0
-## 138          2       520     540 1060 2.80    68         4
-## 139          3       660     580 1240 3.00    62         2
-## 140          4       470     600 1070 3.10    70         2
-## 141          1       570     580 1150 2.27    46         0
-## 142          1       560     550 1110 2.80    88         2
-## 143          2       520     540 1060 3.02    68         0
-## 144          1       560     500 1060 2.93    74         0
-## 145          1       600     600 1200 3.20    88         2
-## 146          1       400     420  820 3.00    67         3
-## 147          4       540     630 1170 3.00    61         0
-## 148          2       400     460  860 2.70    62         0
-## 149          1       530     725 1255 3.20    69         0
-## 150          1       530     600 1130 2.90    59         5
-## 151         NA       517     561 1078 3.00    79         2
-## 152          1       620     580 1200 2.72    56         0
-## 153          1       590     640 1230 3.30    85         2
-## 154          2       590     610 1200   NA    72         0
-## 155          3       620     600 1220 2.22    69         0
-## 156          2       540     690 1230 3.26    61         2
-## 157          3       490     540 1030 3.50    95         7
-## 158          1       540     520 1060 3.10    58         2
-## 159          3       640     600 1240 3.30    57         2
-## 160          1       620     620 1240 3.29    80         2
-## 161          3       680     540 1220   NA    60         0
-## 162          1       800     670 1470 3.69    69         2
-## 163          2       510     650 1160 2.65    73         0
-## 164          2       620     690 1310 3.25    62         0
-## 165          1       670     650 1320 2.80    64         0
-## 166          3       560     510 1070 3.36    86         2
-## 167          1       630     600 1230 2.97    73         0
-## 168          1       590     740 1330 3.31    71         0
-## 169          1       630     620 1250 3.05    72         0
-## 170          2       470     500  970 2.20    84         4
-## 171          3       550     540 1090 3.30   120         4
-## 172          1       690     660 1350 3.45    77         6
-## 173          2       660     700 1360 3.83    80         4
-## 174          1       600     590 1190 3.00    80         4
-## 175          2       700     560 1260 3.35    54         8
-## 176          3       660     690 1350 2.40    54         0
-## 177          3       540     650 1190 3.10    78         0
-## 178          3       520     630 1150 3.40    72         2
-## 179          1       550     580 1130 2.82    78         0
-## 180          1       600     620 1220 2.90    69         2
-## 181          1       600     640 1240 3.40    80         0
-## 182          1       520     480 1000 3.20    76         7
-## 183          1       490     610 1100 3.20    74         5
-## 184          1       600     650 1250 3.80    70         0
-## 185          2       620     520 1140 3.57    72         2
-## 186          2       530     620 1150 3.33    60         0
-## 187          2       550     620 1170 2.90    71         0
-## 188          2       600     600 1200 3.20    70         0
-## 189          2       610     680 1290 3.10    53         1
-## 190          1       550     600 1150 3.25    70         0
-## 191          4       560     580 1140 3.40    75         0
-## 192          3       670     710 1380 3.80    84         2
-## 193          1       610     600 1210 3.38    66         0
-## 194          1       660     720 1380 3.88    72         4
-## 195          3       630     660 1290 2.75    70         0
-## 196          2       520     580 1100 2.90    49         0
-## 197          5       670     750 1420 3.60    81         5
-## 198          1       550     710 1260 2.80    77         0
-## 199          1       560     680 1240 2.20    72         1
-## 200          2       390     410  800   NA    38         4
-## 201          2       600     500 1100 3.30    60         0
-## 202          3       560     690 1250 2.85    64         0
-## 203          3       610     660 1270 3.37    65         2
-## 204          1       710     760 1470 3.50    72         2
-## 205          2       710     680 1390 3.55    54         6
-## 206          4       560     640 1200 3.20    82         2
-## 207          1       600     630 1230 2.47    82         0
-## 208          2       540     560 1100 2.72    62         0
-## 209          5       600     640 1240 3.40    52         0
-## 210          2       600     570 1170   NA    66         0
-## 211          1       550     560 1110 3.40    55         5
-## 212          3       550     550 1100 3.10    63         0
-## 213          1       620     660 1280 3.10    78         2
-## 214          1       550     650 1200 2.94    65         3
-## 215          2       570     580 1150 3.00    64         0
-## 216          1       530     520 1050   NA    70         2
-## 217          1       570     600 1170 3.60    70         2
-## 218          1       620     640 1260 3.60    65         2
-## 219          1       520     670 1190 3.50    71         0
-## 220          2       620     640 1260 3.40    54         0
-## 221          1       520     670 1190 3.50    71         0
-## 222          2       680     750 1430 3.00    54         0
-## 223          2       630     710 1340 2.75    70         0
-## 224          1       730     650 1380 3.56    65         0
-## 225          1       440     460  900 2.70    82         0
-## 226          2       670     700 1370 3.68    63         2
-## 227          3       500     560 1060 3.50    71         4
-## 228          1       630     560 1190 3.50    75         0
-## 229          2       680     620 1300 3.40    60         5
-## 230          1       530     580 1110 2.60    54         2
-## 231          2       630     620 1250 3.25    68         0
-## 232          1       600     620 1220 3.30    70         0
-## 233          1       700     560 1260 3.20    90         0
-## 234          1       590     620 1210 2.90    72         0
-## 235          1       670     670 1340 3.85    41         2
-## 236          1       780     640 1420 3.40    80         0
-## 237          3       660     620 1280 3.40    68         0
-## 238          2       600     580 1180   NA    64         2
-## 239          2       510     530 1040 2.70    78         0
-## 240          1       800     740 1540 3.81    65         0
-## 241          2       740     660 1400 3.40    64         9
-## 242          1       780     620 1400 3.23    78         0
-## 243          3       440     560 1000 3.10    42         0
-## 244          1       700     550 1250 2.89    60         6
-## 245          1       660     560 1220 2.81    59         0
-## 246          3       520     510 1030 3.00    54         4
-## 247          2       600     620 1220 3.77    70         0
-## 248          2       760     640 1400 3.30    52         0
-## 249          1       680     740 1420 3.00    88         0
-## 250          1       520     590 1110 2.90    60         5
-## 251          1       510     730 1240 3.50    66         5
-## 252          4       600     600 1200 3.60    55         0
-## 253          1       650     680 1330 3.70    74         0
-## 254          1       700     670 1370 3.20    59         0
-## 255          1       650     620 1270 2.87    84         0
-## 256          2       520     520 1040 3.30    68         0
-## 257          2       580     530 1110 3.30    74         2
-## 258          1       600     600 1200 3.45    58         0
-## 259          1       520     710 1230 3.10    62         0
-## 260          1       750     780 1530 3.71    84         0
-## 261          1       650     650 1300 3.30    72         0
-## 262          2       550     580 1130 3.30    52         0
-## 263          1       650     600 1250   NA    80         6
-## 264          1       640     640 1280 3.73    68         0
-## 265          4       660     670 1330 3.13    71         2
-## 266          2       640     640 1280 3.89    55         2
-## 267          1       530     650 1180 3.05    68         0
-## 268          1       690     650 1340 3.20    61         0
-## 269          1       630     610 1240 3.25    80         0
-## 270          1       600     550 1150 2.90    66         5
-## 271          2       560     620 1180 3.00    70         0
-## 272          1       720     690 1410 3.50    78         4
-## 273          2       610     640 1250 3.50    88         2
-## 274          2       720     690 1410 3.60    72         2
-## 275          2       590     560 1150 3.40    65         5
-## 276          2       620     570 1190 3.25    63         5
-## 277          2       550     690 1240 2.70    70         0
-## 278          1       800     670 1470 3.78    72         0
-## 279          7       670     690 1360 4.00    63         2
-## 280          1       550     600 1150 3.00    68         0
-## 281          2       620     470 1090 3.30    64         1
-## 282          1       520     620 1140 2.80    64         6
-## 283          1       440     640 1080 2.50    60         0
-## 284          1       720     700 1420 3.50    68         6
-## 285          1       390     530  920 2.80    70         2
-## 286          1       560     560 1120 3.40    63         4
-## 287          1       570     610 1180 3.00    57         0
-## 288          1       660     600 1260 3.27    84         2
-## 289          4       620     640 1260 3.50    74         5
-## 290          3       660     570 1230 3.00    61         0
-## 291          1       630     610 1240 3.60    78         5
-## 292          2       610     600 1210 3.25    65         0
-## 293          4       540     680 1220 3.00    68         0
-## 294          1       570     570 1140 2.75    76         6
-## 295          1       600     670 1270 2.90    54         0
-## 296          1       600     600 1200 3.00    56         3
-## 297          3       530     640 1170 3.00    88         0
-## 298          2       560     580 1140 2.90    77         3
-## 299          2       560     560 1120 3.36    52         1
-## 300          2       500     580 1080 3.25    62         0
-## 301          1       560     480 1040 3.50    80         2
-## 302          1       500     700 1200 2.76    60         0
-## 303          2       640     650 1290   NA    67         0
-## 304          3       660     570 1230 2.75    51         0
-## 305          2       550     550 1100 3.25    81         2
-## 306          1       630     680 1310 3.00    62         0
-## 307          2       700     600 1300 2.80    84         0
-## 308          1       560     560 1120 3.40    75         5
-## 309          1       580     650 1230 3.25    60         0
-## 310          3       800     600 1400 3.50    76        10
-## 311          2       460     520  980 3.05    65         0
-## 312          2       700     740 1440 3.18    65         0
-## 313          2       660     650 1310 3.00    64         2
-## 314          1       500     550 1050 2.23    75         7
-## 315          1       600     630 1230 3.40    93         2
-## 316          2       650     620 1270 3.30    75         2
-## 317          3       640     620 1260 3.43    82         0
-## 318          1       620     550 1170 3.88    80         2
-## 319          1       570     480 1050 3.45    69         0
-## 320          3       540     560 1100 3.00    85         2
-## 321          2       670     680 1350 3.00    76         0
-## 322          1       620     620 1240 3.18    76         0
-## 323          3       650     600 1250 2.20    65         0
-## 324          1       560     570 1130 3.29    67         4
-## 325          1       480     690 1170 3.50    64         8
-## 326          1       460     520  980 2.80    71         0
-## 327          3       500     610 1110 2.90    65         2
-## 328          3       680     680 1360 3.50    83         0
-## 329          1       550     650 1200 2.50    65         0
-## 330          2       630     680 1310 3.25    77         0
-## 331          2       620     640 1260 2.90    66         0
-## 332          2       560     620 1180 3.66    62         0
-## 333          3       590     630 1220 3.01    58         4
-## 334          1       530     510 1040 2.25    48         3
-## 335          1       690     500 1190 3.20    61         0
-## 336          1       550     600 1150 3.35    50         0
-## 337          1       600     600 1200 3.00    72         2
-## 338          2       610     600 1210 3.00    74         0
-## 339          2       600     600 1200 3.48    80         0
-## 340          1       750     500 1250 2.88    90         0
-## 341          2       470     420  890 2.60    72         6
-## 342          1       550     490 1040 2.75    64         0
-## 343          1       540     600 1140 3.30    72         0
-## 344          1       530     600 1130 3.25    70         0
-## 345          1       540     670 1210 3.30    84         0
-## 346          1       680     580 1260 3.20    87         4
-## 347          1       510     530 1040 2.60    60        NA
-## 348          2       500     650 1150 3.00    60         0
-## 349          3       680     610 1290 3.25    80         5
-## 350          1       500     650 1150 3.30    70         0
-## 351          2       570     580 1150 3.25    78         4
-## 352          1       540     550 1090 2.83    75         0
-## 353          1       550     560 1110 3.30    42         5
-## 354          2       680     750 1430 3.60    80         0
-## 355          2       630     730 1360 3.70    72         2
-## 356          1       650     670 1320 2.83    96         6
-## 357          3       680     650 1330 3.30    95         0
-## 358          1       550     540 1090 3.44    80         3
-## 359          1       600     620 1220 3.00    74         0
-## 360          2       540     450  990 3.27    78         2
-## 361          2       550     550 1100 2.30    72         0
-## 362          1       500     510 1010 2.60    91         5</code></pre>
+head(df)</code></pre>
+<pre><code>##        Year Gender Smoke   Award HigherSAT Exercise TV Height Weight Siblings
+## 1    Senior      M    No Olympic      Math       10  1     71    180        4
+## 2 Sophomore      F   Yes Academy      Math        4  7     66    120        2
+## 3 FirstYear      M    No   Nobel      Math       14  5     72    208        2
+## 4    Junior      M    No   Nobel      Math        3  1     63    110        1
+## 5 Sophomore      F    No   Nobel    Verbal        3  3     65    150        1
+## 6 Sophomore      F    No   Nobel    Verbal        5  4     65    114        2
+##   BirthOrder VerbalSAT MathSAT  SAT  GPA Pulse Piercings
+## 1          4       540     670 1210 3.13    54         0
+## 2          2       520     630 1150 2.50    66         3
+## 3          1       550     560 1110 2.55   130         0
+## 4          1       490     630 1120 3.10    78         0
+## 5          1       720     450 1170 2.70    40         6
+## 6          2       600     550 1150 3.20    80         4</code></pre>
+</div>
+<div id="wrangling-the-data-with-dplyr" class="section level2">
+<h2>Wrangling the Data with <code>dplyr</code></h2>
+<p>You should note that I added dplyr to the library above. Following
+code gives me a frequency table.</p>
+<pre class="r"><code>df |&gt;
+  count(Year)</code></pre>
+<pre><code>##        Year   n
+## 1             2
+## 2 FirstYear  94
+## 3    Junior  35
+## 4    Senior  36
+## 5 Sophomore 195</code></pre>
+<p>We should note that there are <code>na</code>s in the data and the
+order is alphabetical. We can change the datatype to fix this.</p>
+<pre class="r"><code>df %&gt;%
+  mutate(Year = factor(Year,levels  = c(&quot;FirstYear&quot;,&quot;Sophomore&quot;, &quot;Junior&quot;, &quot;Senior&quot;)))%&gt;%
+  count(Year)</code></pre>
+<pre><code>##        Year   n
+## 1 FirstYear  94
+## 2 Sophomore 195
+## 3    Junior  35
+## 4    Senior  36
+## 5      &lt;NA&gt;   2</code></pre>
+<p>What if I want to look at GPA by grade level.</p>
+<pre class="r"><code>df %&gt;%
+  group_by(Year)%&gt;%
+  summarise(avg = mean(GPA, na.rm = TRUE), std = sd(GPA, na.rm = TRUE))</code></pre>
+<pre><code>## # A tibble: 5 × 3
+##   Year           avg    std
+##   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;
+## 1 &quot;&quot;          NaN    NA    
+## 2 &quot;FirstYear&quot;   3.08  0.466
+## 3 &quot;Junior&quot;      3.24  0.394
+## 4 &quot;Senior&quot;      3.17  0.375
+## 5 &quot;Sophomore&quot;   3.18  0.369</code></pre>
+<pre class="r"><code>df |&gt;
+  filter(Year == &quot;Junior&quot;)|&gt;
+ # mutate(HigherSAT = if_else(VerbalSAT &gt;= MathSAT, &quot;Verbal&quot;, &quot;Math&quot;))|&gt; #if the actual wasn&#39;t there
+  count(HigherSAT)</code></pre>
+<pre><code>##   HigherSAT  n
+## 1            2
+## 2      Math 19
+## 3    Verbal 14</code></pre>
+</div>
+<div id="wrangling-data-with-base" class="section level2">
+<h2>Wrangling Data With Base</h2>
+<pre class="r"><code>table(df[df$Year==&quot;Junior&quot;,&quot;HigherSAT&quot;])</code></pre>
+<pre><code>## 
+##          Math Verbal 
+##      2     19     14</code></pre>
+<p>##Data Noise</p>
+<pre class="r"><code>x = c(1:10)
+y = x + rnorm(10)
+
+plot(x,y, main = &quot;Noisy Data&quot;)</code></pre>
+<p><img role="img" src="data:image/png;base64,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" width="672" /></p>
+<pre class="r"><code>fit &lt;- lm(y~x)
+
+plot(x,y, main = &quot;Linear Fit&quot;)
+abline(fit)</code></pre>
+<p><img role="img" src="data:image/png;base64,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" width="672" /></p>
+<pre class="r"><code>f &lt;- approxfun(x, y)
+curve(f(x), 0, 11, col = &quot;green2&quot;)
+points(x, y)</code></pre>
+<p><img role="img" src="data:image/png;base64,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57Wv9Mi6rR6SPqDn/0r5PStnTwS0hN2zJdcbIntXz5hM6b/+nUg5t9WD8gc05zf97e9QCOiM/vjuvfXd/cH3pecI+PXTzRM91ejXA5pzWz2ogYAClCGgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQIKECSgAEECChAkoABBAgoQJKAAQQJKZi+67q0f+wtnT7ru3dLTsDgCSmaX3bwsKcxIQEnt5Wl38s35+etHXfdF6VlYHgElt6dd987vF/8LMxNQctvse64X8P1+KMxMQEluHc8/nXbdx6XnYIkElOT640gW8JQhoGT38tQCnkIElOz6XVCnMFGEgJLd834J7yVQShBQknv9qDs5tYanCAEluafr3c/n3sdJEQJKbi/6I/DeiEQZAkpq/RGkL7wVnkIElNSeb08B7TvqOBKzE1Aye7k7fOTNnJQgoGT29PLo0VPHkZifgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIE/X8+UopYxdKm1QAAAABJRU5ErkJggg==" width="672" /></p>
+<pre class="r"><code>lagrange &lt;- function(x0, y0) {
+  f &lt;- function (x) {
+    sum(y0 * sapply(seq_along(x0), \(j) {
+      prod(x - x0[-j])/prod(x0[j] - x0[-j])
+    }))
+  }
+  Vectorize(f, &quot;x&quot;)
+} #https://stackoverflow.com/questions/73994021/lagrange-interpolation-formula-in-r-programming
+
+f &lt;- lagrange(x,y)
+plot(x,y)
+curve(f, from = 1, to = 10, add = TRUE)</code></pre>
+<p><img role="img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAAAvVBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZrY6AAA6OgA6Ojo6OmY6ZmY6ZpA6ZrY6kLY6kNtmAABmOgBmOjpmZjpmZmZmZpBmkLZmkNtmtttmtv+QOgCQZjqQZmaQkDqQkLaQtraQttuQtv+Q2/+2ZgC2Zjq2kDq2kGa2tpC2tra2ttu227a229u22/+2///bkDrbkGbbtmbbtpDbtrbb25Db27bb29vb2//b////tmb/25D/27b/29v//7b//9v////80vLNAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO3dDXcb1fXoYSUFXFp6CW1KS+i99BJK0wuk0BuaF7C//8f6S36VHcnWbM3M2fvM86wFcbJke49mzs8avXl1BkDIqvUAAFUJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBE0e0NOf//PixYt//fw68skrgNGMnbeJA/rq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" width="672" />
+## Accuracy or Precision</p>
+<p>How would you model? I would have two random variables describing my
+desired outcome. One I would think of as the initial placement and the
+other the noise. I would tune both based on how high I allowed the
+accuracy and precision to be respectively.</p>
+<pre class="r"><code>n &lt;- 5
+acc &lt;- .1
+prec &lt;- .1
+
+x&lt;- rnorm(5,mean = 0, sd = acc)+rnorm(5,mean = 0, sd = prec)
+y&lt;- rnorm(5,mean = 0, sd = acc)+rnorm(5,mean = 0, sd = prec)
+
+plot(x,y)#This doesn&#39;t work as well as I hoped...</code></pre>
+<p><img role="img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAAArlBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZrY6AAA6OgA6Ojo6OmY6ZmY6ZpA6ZrY6kNtmAABmOgBmOjpmZjpmZmZmkJBmkLZmkNtmtttmtv+QOgCQZgCQZjqQtraQttuQtv+Q2/+2ZgC2Zjq2kGa2kLa2tpC2tra2ttu229u22/+2///bkDrbkGbbtmbbtpDbtrbb27bb29vb2//b////tmb/25D/27b/29v//7b//9v///9tFwMKAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAckklEQVR4nO3dbX8T1aLG4USRqBsFTuSoWz12sw0gChTaQvr9v9iZado0bdK0c7PSuGau64W/Onlosmb6J5N5Gp0CEBnt+wUA1EpAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChASUICQgAKEBBQgJKAAIQEFCAkoQEhAAUICChD6Zwd0BFBM+UQVf8aC9j3aQL8Ub1TpJyxpB/9gAIMloAAhAQUICShASEABQgIKEBJQgJCAAoQEFCAkoAAhAQUI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" width="672" /></p>
+</div>
+<div id="data-types" class="section level2">
+<h2>Data Types</h2>
+<pre class="r"><code>x &lt;- c(1:100)
+
+evens &lt;- x%%2==0
+
+x[evens]</code></pre>
+<pre><code>##  [1]   2   4   6   8  10  12  14  16  18  20  22  24  26  28  30  32  34  36  38
+## [20]  40  42  44  46  48  50  52  54  56  58  60  62  64  66  68  70  72  74  76
+## [39]  78  80  82  84  86  88  90  92  94  96  98 100</code></pre>
+<p>Look at the student set, explore the different picks.</p>
+<pre class="r"><code>disney &lt;- read.csv(&quot;disney.csv&quot;)
+
+
+
+weekdays(mdy(disney$Release.date..datetime.))[1]</code></pre>
+<pre><code>## [1] &quot;Wednesday&quot;</code></pre>
+</div>
+<div id="statistics" class="section level2">
+<h2>Statistics</h2>
+<pre class="r"><code>df |&gt;
+  group_by(Year) |&gt;
+  summarise(&quot;Aritmetic Mean&quot; = mean(GPA, na.rm = TRUE), 
+            &quot;Geometric Mean&quot; = exp(mean(log(GPA), na.rm = TRUE)),
+            &quot;Standard Deviation&quot; = sd(GPA, na.rm = TRUE), 
+            &quot;InterQuartile Range&quot; = IQR(GPA, na.rm = TRUE)
+            )</code></pre>
+<pre><code>## # A tibble: 5 × 5
+##   Year        `Aritmetic Mean` `Geometric Mean` `Standard Deviation`
+##   &lt;chr&gt;                  &lt;dbl&gt;            &lt;dbl&gt;                &lt;dbl&gt;
+## 1 &quot;&quot;                    NaN              NaN                  NA    
+## 2 &quot;FirstYear&quot;             3.08             3.04                0.466
+## 3 &quot;Junior&quot;                3.24             3.21                0.394
+## 4 &quot;Senior&quot;                3.17             3.15                0.375
+## 5 &quot;Sophomore&quot;             3.18             3.15                0.369
+## # ℹ 1 more variable: `InterQuartile Range` &lt;dbl&gt;</code></pre>
+</div>
 </div>
 
 

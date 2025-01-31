@@ -15,7 +15,7 @@ library(lubridate)
 ## Loading Data
 
 ```{r}
-df <- read.csv("https://raw.githubusercontent.com/nurfnick/Data_Mining_R/refs/heads/main/StudentSurveys.csv")
+df <- read.csv("StudentSurveys.csv")
 
 head(df)
 ```
