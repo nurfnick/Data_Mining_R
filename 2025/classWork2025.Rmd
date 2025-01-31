@@ -112,11 +112,23 @@ plot(x,y)#This doesn't work as well as I hoped...
 
 ## Data Types
 
+```{r logical}
+x <- c(1:100)
+
+evens <- x%%2==0
+
+x[evens]
+```
+
+
+
 Look at the student set, explore the different picks.
 ```{r}
 disney <- read.csv("disney.csv")
 
-weekdays(mdy(disney$Release.date..datetime.)[1])
+
+
+weekdays(mdy(disney$Release.date..datetime.))[1]
 ```
 
 ## Statistics
