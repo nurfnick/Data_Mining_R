@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(lubridate)
+library(knitr)
 ```
 
 # Data
@@ -132,7 +133,7 @@ weekdays(mdy(disney$Release.date..datetime.))[1]
 ```
 
 ## Statistics
-```{r}
+```{r, echo = FALSE}
 df |>
   group_by(Year) |>
   summarise("Aritmetic Mean" = mean(GPA, na.rm = TRUE), 
@@ -141,4 +142,24 @@ df |>
             "InterQuartile Range" = IQR(GPA, na.rm = TRUE)
             )
 ```
+Making this table look at bit nicer as it displays:
+
+```{r, echo = TRUE}
+df |>
+  group_by(Year) |>
+  summarise("Aritmetic Mean" = mean(GPA, na.rm = TRUE), 
+            "Geometric Mean" = exp(mean(log(GPA), na.rm = TRUE)),
+            "Standard Deviation" = sd(GPA, na.rm = TRUE), 
+            "InterQuartile Range" = IQR(GPA, na.rm = TRUE)
+            ) |>
+  kable()
+
+```
+
+```{r}
+t.test(df[df$Year == "FirstYear","GPA"],df[df$Year == "Senior","GPA"])
+```
+
+
+
 
