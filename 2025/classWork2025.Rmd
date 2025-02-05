@@ -216,3 +216,18 @@ ggplot(df, aes(x = GPA, y = Exercise))+
   geom_point()+
   geom_smooth(method = lm)
 ```
+
+## Adding More to Your Graphics
+
+Good graphs should have
+
+1. Descriptive title
+2. Appropriate Labels
+3. Colors that are consistent and make sense
+4. Allow the reader to glean the data quickly 
+```{r}
+ggplot(df, aes(x = GPA, y = Exercise))+
+  geom_point(aes(color = Gender))+
+  geom_smooth(method = lm) +
+  labs(title = "Is there Correlation of ")
+```
