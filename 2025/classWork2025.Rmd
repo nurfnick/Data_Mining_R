@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(lubridate)
 library(knitr)
+library(ggplot2)
 ```
 
 # Data
@@ -156,10 +157,62 @@ df |>
 
 ```
 
+
+
 ```{r}
 t.test(df[df$Year == "FirstYear","GPA"],df[df$Year == "Senior","GPA"])
 ```
 
 
+## Graphing 
+
+I am going to completely ignore the base package way of graphing and stick to the `tidyverse` and `ggplot2`.
+
+```{r}
+ggplot(data = df, aes(x = Year, y = GPA)) +
+  geom_boxplot()
+```
+```{r}
+ggplot(data = df, aes(x = Year))+
+  geom_bar()
+```
+
+```{r}
+ggplot(df, aes(x = Year, color = Smoke)) +
+  geom_bar()
+```
+
+```{r}
 
 
+
+ggplot(df, aes(x = Year, y = Smoke, fill = GPA)) +
+  geom_tile()
+```
+
+What if I really wanted those values?  It was much harder...
+```{r}
+df |> 
+  group_by(Year, Smoke) |>
+  summarise(AVG = mean(GPA, na.rm = TRUE)) |>
+  ggplot(aes(x = Year, y = Smoke, fill = AVG)) +
+  geom_tile() +
+  geom_text(aes(label = round(AVG,2)))
+```
+
+```{r}
+ggplot(df, aes(x = GPA))+
+  geom_histogram() +
+  labs(title = "Winner!")
+```
+
+```{r}
+ggplot(df)+
+  geom_qq(aes(sample = GPA)) +
+  geom_qq_line(aes(sample = GPA))
+```
+```{r}
+ggplot(df, aes(x = GPA, y = Exercise))+
+  geom_point()+
+  geom_smooth(method = lm)
+```
