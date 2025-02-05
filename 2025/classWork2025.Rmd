@@ -168,9 +168,9 @@ t.test(df[df$Year == "FirstYear","GPA"],df[df$Year == "Senior","GPA"])
 
 I am going to completely ignore the base package way of graphing and stick to the `tidyverse` and `ggplot2`.
 
-```{r}
+```{r, warning=FALSE}
 ggplot(data = df, aes(x = Year, y = GPA)) +
-  geom_boxplot()
+  geom_boxplot(color = 'blue')
 ```
 ```{r}
 ggplot(data = df, aes(x = Year))+
@@ -178,7 +178,7 @@ ggplot(data = df, aes(x = Year))+
 ```
 
 ```{r}
-ggplot(df, aes(x = Year, color = Smoke)) +
+ggplot(df, aes(x = Year, fill = Smoke)) +
   geom_bar()
 ```
 
