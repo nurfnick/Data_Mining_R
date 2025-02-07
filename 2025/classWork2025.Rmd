@@ -256,7 +256,9 @@ p <- df |>
   geom_jitter(aes(color = Gender))+
   geom_smooth(method = lm) +
   labs(title = "Is there Correlation of ", alt = "Graph revealing the correlation of female and males with gpa and exercise")+
-  scale_color_manual(labels = c("Female","Male"), values = c('#FF5200','black' ))
+  scale_color_manual(labels = c("Female","Male"), values = c('#FF5200','black' ))+
   theme_minimal() 
+
 ggplotly(p,tooltip = "text")
+
 ```
