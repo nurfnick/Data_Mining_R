@@ -11,6 +11,9 @@ library(dplyr)
 library(lubridate)
 library(knitr)
 library(ggplot2)
+library(plotly)
+library(doParallel)
+registerDoParallel(8)
 ```
 
 # Data
@@ -212,6 +215,17 @@ ggplot(df)+
   geom_qq_line(aes(sample = GPA))
 ```
 ```{r}
+#, include = FALSE}
+hist(df$TV, xlab = "TV",main = "Histogram of My TV Hours for Students")
+```
+
+```{r}
+ggplot(df, aes(x = TV))+
+  geom_histogram() +
+  labs(title = "Histogram of TV time")
+```
+
+```{r}
 ggplot(df, aes(x = GPA, y = Exercise))+
   geom_point()+
   geom_smooth(method = lm)
@@ -226,8 +240,23 @@ Good graphs should have
 3. Colors that are consistent and make sense
 4. Allow the reader to glean the data quickly 
 ```{r}
-ggplot(df, aes(x = GPA, y = Exercise))+
-  geom_point(aes(color = Gender))+
+ggplot(df, aes(x = GPA, y = Exercise,color = Gender))+
+  geom_jitter()+
   geom_smooth(method = lm) +
-  labs(title = "Is there Correlation of ")
+  labs(title = "Is there Correlation of ", alt = "Graph revealing the correlation of female and males with gpa and exercise")+
+  scale_color_manual(labels = c("Female","Male"), values = c('#FF5200','black' ))+
+  theme_minimal()
+```
+
+
+```{r, message = FALSE, warning = FALSE, error = FALSE, echo = FALSE}
+p <- df |>
+  mutate(text = paste0("GPA: ", GPA, "\n", "Exercise: ", Exercise, "\n", "Gender: ",Gender, "\n", "What else?")) |>
+  ggplot( aes(x = GPA, y = Exercise, text = text))+
+  geom_jitter(aes(color = Gender))+
+  geom_smooth(method = lm) +
+  labs(title = "Is there Correlation of ", alt = "Graph revealing the correlation of female and males with gpa and exercise")+
+  scale_color_manual(labels = c("Female","Male"), values = c('#FF5200','black' ))
+  theme_minimal() 
+ggplotly(p,tooltip = "text")
 ```
