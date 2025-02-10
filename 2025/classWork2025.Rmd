@@ -14,6 +14,8 @@ library(ggplot2)
 library(plotly)
 library(doParallel)
 registerDoParallel(8)
+library(boot)
+library(caret)
 ```
 
 # Data
@@ -261,4 +263,53 @@ p <- df |>
 
 ggplotly(p,tooltip = "text")
 
+```
+
+## Random Sampling
+
+```{r}
+i <- 0
+n <- 1000
+sampleSize <- 300
+
+#sample(df$Exercise,sampleSize)
+randomSampleMeans <- vector(,n) 
+while(i<n){
+  i<- i+1
+  randomSampleMeans[i] = mean(sample(df$Exercise, sampleSize), na.rm = TRUE)
+}
+
+hist(randomSampleMeans)
+```
+
+```{r}
+ttestobj <- t.test(df$Exercise, mu = 9)
+ttestobj$stderr
+```
+
+```{r}
+mean2 <- function(d,i){
+  d <- d[i,]
+  return(mean(d))
+}
+exercise <- df |>
+  select(Exercise) |>
+  filter(!is.na(Exercise)) 
+
+
+bo <- boot(exercise,mean2,R = 1000)
+
+plot(bo)
+```
+
+```{r}
+dfNoNa <- df[complete.cases(df),]
+fit <- trainControl(method = "repeatedcv",
+                    number = 3,
+                    repeats = 10)
+
+train(Exercise ~ GPA,
+      data = dfNoNa,
+      method = "lm",
+      trControl = fit)
 ```
