@@ -313,3 +313,66 @@ train(Exercise ~ GPA,
       method = "lm",
       trControl = fit)
 ```
+
+# Linear Regression
+
+## Correlation
+
+```{r}
+cor(dfNoNa$Height, dfNoNa$Weight)
+```
+
+Great, the black box works.  Let's check the value!
+
+```{r}
+xbar <- mean(dfNoNa$Height)
+ybar <- mean(dfNoNa$Weight)
+
+varx <- mean((dfNoNa$Height-xbar)^2)
+vary <- mean((dfNoNa$Weight - ybar)^2)
+
+cov <- mean((dfNoNa$Height-xbar)*(dfNoNa$Weight - ybar))
+
+cov/(sqrt(varx*vary))
+```
+
+SWEET!
+
+I should look at the scatterplot too.  I'll add the line that is the best as well.
+
+```{r}
+ggplot(dfNoNa, aes(x = Height, y = Weight)) +
+  geom_point()+
+  geom_smooth(method = "lm")
+```
+
+A perfect fit
+```{r}
+x <- c(1:10)
+y <- c(10:1)
+fit <- lm(y~x)
+plot(x,y)
+abline(fit)
+cor(x,y)
+```
+
+A noisy fit
+
+```{r}
+y <- -0.5*x + rnorm(10)
+fit <- lm(y~x)
+plot(x,y)
+abline(fit)
+cor(x,y)
+```
+
+Bad idea to fit
+
+```{r}
+y <- x^3
+fit <- lm(y~x)
+plot(x,y)
+abline(fit)
+cor(x,y)
+cor.test(x,y)
+```
