@@ -342,9 +342,14 @@ I should look at the scatterplot too.  I'll add the line that is the best as wel
 
 ```{r}
 ggplot(dfNoNa, aes(x = Height, y = Weight)) +
-  geom_point()+
+  geom_jitter()+
   geom_smooth(method = "lm")
 ```
+```{r}
+cor.test(dfNoNa$Height,dfNoNa$Weight)
+```
+
+
 
 A perfect fit
 ```{r}
@@ -370,9 +375,54 @@ Bad idea to fit
 
 ```{r}
 y <- x^3
-fit <- lm(y~x)
+
+fit <- lm(y~x*x*x)
+fit
 plot(x,y)
 abline(fit)
 cor(x,y)
 cor.test(x,y)
 ```
+## Regression
+
+```{r}
+lm(Weight ~ Height, data = dfNoNa)
+
+```
+Do it via formulas just to get it across...
+```{r}
+beta1 <- cov/varx
+beta1
+
+beta0 <- ybar - beta1*xbar
+beta0
+```
+
+The lm, gives you more than just the coefficients.
+```{r}
+fit <- lm(Weight ~ Height, data = dfNoNa)
+
+summary(fit)
+```
+
+
+Using `predict`.
+```{r}
+newData <- data.frame("Height" = c(69,42))
+predict(fit, newData)
+```
+
+Making your own function
+```{r}
+line <- function(x){
+   beta0+x*beta1
+}
+line(69)
+```
+
+The fit has lots of things to look at. 
+```{r}
+#fit$
+fit$coefficients["Height"]*69+fit$coefficients[1]
+```
+
