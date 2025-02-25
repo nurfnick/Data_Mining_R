@@ -3,6 +3,8 @@ Repository for Data Mining using R and RStudio
 
 This year's master file can be found at https://nurfnick.github.io/Data_Mining_R/2025/classWork2025.html
 
+I have attempted to make a master file for navigation to your project https://nurfnick.github.io/Data_Mining_R/2025/index.html
+
 Any html file here can be opened using the link https://nurfnick.github.io/Data_Mining_R/*file.html*
 
 For example, the EarthQuakes.html file link is https://nurfnick.github.io/Data_Mining_R/2021/EarthQuakes.html
