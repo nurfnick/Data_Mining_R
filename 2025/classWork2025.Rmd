@@ -341,7 +341,7 @@ SWEET!
 I should look at the scatterplot too.  I'll add the line that is the best as well.
 
 ```{r}
-ggplot(dfNoNa, aes(x = Height, y = Weight)) +
+ggplot(dfNoNa, aes(x = Height, y = Weight, colour = Gender)) +
   geom_jitter()+
   geom_smooth(method = "lm")
 ```
@@ -376,13 +376,33 @@ Bad idea to fit
 ```{r}
 y <- x^3
 
-fit <- lm(y~x*x*x)
+fit <- lm(y~x)
 fit
 plot(x,y)
 abline(fit)
 cor(x,y)
 cor.test(x,y)
 ```
+```{r}
+y <- x*x*x+3*x + rnorm(length(x))
+x2 <- x^2
+x3 <- x^3
+
+fit <- lm(y~x + x2 +x3)
+
+fun <- function(x){
+  fit$coefficients[1]+fit$coefficients[2]*x+fit$coefficients[3]*x*x+fit$coefficients[4]*x*x*x
+}
+
+z <- apply(as.array(x),1,fun)
+
+plot(x,z,"l")
+points(x,y)
+```
+Got it!  Don't use the `poly` command.  It doesn't do what you'd expect...
+
+
+
 ## Regression
 
 ```{r}
@@ -422,7 +442,21 @@ line(69)
 
 The fit has lots of things to look at. 
 ```{r}
-#fit$
 fit$coefficients["Height"]*69+fit$coefficients[1]
+```
+
+## Model Assessment
+```{r}
+plot(fit)
+```
+
+## Multiple Regression
+
+
+
+```{r}
+fit2 <- lm(Weight ~ . , data = dfNoNa)
+
+summary(fit2)
 ```
 
