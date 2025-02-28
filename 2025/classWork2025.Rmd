@@ -383,22 +383,7 @@ abline(fit)
 cor(x,y)
 cor.test(x,y)
 ```
-```{r}
-y <- x*x*x+3*x + rnorm(length(x))
-x2 <- x^2
-x3 <- x^3
 
-fit <- lm(y~x + x2 +x3)
-
-fun <- function(x){
-  fit$coefficients[1]+fit$coefficients[2]*x+fit$coefficients[3]*x*x+fit$coefficients[4]*x*x*x
-}
-
-z <- apply(as.array(x),1,fun)
-
-plot(x,z,"l")
-points(x,y)
-```
 Got it!  Don't use the `poly` command.  It doesn't do what you'd expect...
 
 
@@ -452,11 +437,95 @@ plot(fit)
 
 ## Multiple Regression
 
+```{r}
+x <- c(1:10)
+y <- x*x*x+3*x + rnorm(length(x))
+x2 <- x^2
+x3 <- x^3
+
+fit <- lm(y~x + x2 +x3 +0-x2)
+summary(fit)
+
+fit$coefficients[2]
+fun <- function(x){
+  fit$coefficients[1]*x+fit$coefficients[2]*x*x*x
+}
+
+z <- apply(as.array(x),1,fun)
+z
+plot(x,z,"l")
+points(x,y)
+```
 
 
 ```{r}
-fit2 <- lm(Weight ~ . , data = dfNoNa)
+fit2 <- lm(Weight ~ Height + Gender+Piercings+Award+BirthOrder +Smoke, data = dfNoNa)
 
 summary(fit2)
 ```
+## Categorical
 
+One Hot Encode or Dummyfy
+
+
+```{r}
+dmy <- dummyVars(~.,df)
+dfHot <- data.frame(predict(dmy, newdata = df))
+head(dfHot)
+```
+Different regressions?
+
+```{r}
+lm(Weight ~ Height, data = dfNoNa[dfNoNa$Gender == "M",])
+lm(Weight ~ Height, data = dfNoNa[dfNoNa$Gender != "M",])
+```
+
+Interactions can do that!
+
+```{r}
+lm(Weight ~ Height:Gender, dfNoNa)
+lm(Weight ~ Height*Gender, dfNoNa)
+```
+
+Cyclical Encoding
+
+
+```{r}
+baby = data.frame(quarter = c(1,1,1,1,2,2,3,3,3,4,4,4,4,4,4,4,4,4))
+
+n <- length(unique(baby$quarter))
+
+tran <- function(x){
+   c(cos(x*2*pi/n),sin(x*2*pi/n))
+}
+
+
+baby$x <- apply(as.array(baby$quarter),1,tran)[1,]
+baby$y <- apply(as.array(baby$quarter),1,tran)[2,]
+
+baby
+```
+
+Well it works...
+
+## Extensions of Linear Model
+
+```{r}
+fitControl <- trainControl(method = "cv")
+ridgeGrid <- expand.grid(lambda = seq(0,1,0.1))
+
+ridgeCV <- train(Weight ~ ., data = dfNoNa,
+      method = "ridge",
+      trControl = fitControl,
+      tuneGrid = ridgeGrid)
+
+ridgeCV
+plot(ridgeCV)
+```
+
+
+Logistic Regression
+```{r}
+dfNoNa$Smoke <- factor(dfNoNa$Smoke)
+glm(Smoke ~., data = dfNoNa, family = "binomial")
+```
