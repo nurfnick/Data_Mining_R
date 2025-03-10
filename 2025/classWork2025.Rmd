@@ -512,7 +512,7 @@ Well it works...
 
 ```{r}
 fitControl <- trainControl(method = "cv")
-ridgeGrid <- expand.grid(lambda = seq(0,1,0.1))
+ridgeGrid <- expand.grid(lambda = seq(0.05,0.08,0.001))
 
 ridgeCV <- train(Weight ~ ., data = dfNoNa,
       method = "ridge",
@@ -523,9 +523,43 @@ ridgeCV
 plot(ridgeCV)
 ```
 
+```{r}
+ridgeCV$modelInfo
+```
 
-Logistic Regression
+
+### Logistic Regression
 ```{r}
 dfNoNa$Smoke <- factor(dfNoNa$Smoke)
-glm(Smoke ~., data = dfNoNa, family = "binomial")
+fit <- glm(Smoke ~., data = dfNoNa, family = "binomial")
+
+fit
+
+sum(predict(fit, dfNoNa, type = 'response')>0.25)
 ```
+
+```{r}
+table(dfNoNa$Smoke)
+```
+
+## Principle Components
+
+```{r}
+dfComplete <- dfHot[complete.cases(dfHot),]
+
+pca <- prcomp(dfComplete)
+
+plot(pca)
+
+summary(pca)
+```
+
+```{r}
+fitControl <- trainControl(method = "cv")
+ncompGrid <- expand.grid(ncomp = c(1:15))
+
+train(Weight ~., data = dfNoNa,
+      method = "pcr",
+      tuneGrid = ncompGrid)
+```
+
