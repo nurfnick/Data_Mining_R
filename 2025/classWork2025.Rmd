@@ -556,7 +556,7 @@ summary(pca)
 
 ```{r}
 fitControl <- trainControl(method = "cv")
-ncompGrid <- expand.grid(ncomp = c(1:15))
+ncompGrid <- expand.grid(ncomp = c(1:20))
 
 train(Weight ~., data = dfNoNa,
       method = "pcr",
