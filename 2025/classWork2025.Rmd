@@ -562,4 +562,34 @@ train(Weight ~., data = dfNoNa,
       method = "pcr",
       tuneGrid = ncompGrid)
 ```
+# Classification
+
+```{r}
+dfNoNa$Gender <- as.factor(dfNoNa$Gender)
+
+fitControl <- trainControl(method = "LGOCV", p = 0.66, number = 1)
+classtrain <- train(Gender~Height + Weight, data = dfNoNa,
+      method = "knn",
+      trControl = fitControl,
+      tuneGrid = expand.grid(k=1:9))
+
+classtrain
+```
+```{r}
+confusionMatrix(classtrain)
+```
+```{r}
+a <- createDataPartition(dfNoNa$Gender, list=FALSE, p = 0.66)
+train <- dfNoNa[a,]
+test <- dfNoNa[-a,]
+
+knnfit <- knn3(Gender ~ Weight +Height, data = train)
+
+pred <- predict(knnfit,test, type = "class")
+
+confusionMatrix(table(predicted =pred,actual = test$Gender ))
+```
+
+## Decision Tree
+
 
