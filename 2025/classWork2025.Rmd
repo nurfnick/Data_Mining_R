@@ -16,6 +16,7 @@ library(doParallel)
 registerDoParallel(8)
 library(boot)
 library(caret)
+library(ROCR)
 ```
 
 # Data
@@ -573,8 +574,10 @@ classtrain <- train(Gender~Height + Weight, data = dfNoNa,
       trControl = fitControl,
       tuneGrid = expand.grid(k=1:9))
 
-classtrain
+classtrain$
 ```
+The best one was `{r} classtrain$bestTune$k`  
+
 ```{r}
 confusionMatrix(classtrain)
 ```
@@ -589,7 +592,25 @@ pred <- predict(knnfit,test, type = "class")
 
 confusionMatrix(table(predicted =pred,actual = test$Gender ))
 ```
+```{r}
+pred <- predict(knnfit,test)
+1*(test$Gender == "F")
 
+data.frame(pred)$F
+pred <- prediction(data.frame(pred)$F, 1*(test$Gender == "F"))
+pref <- performance(pred, "tpr", "fpr")
+plot(pref, colorize = T)
+```
+
+```{r}
+data(ROCR.simple)
+df <- data.frame(ROCR.simple)
+pred <- prediction(df$predictions, df$labels)
+perf <- performance(pred,"tpr","fpr")
+pred
+plot(perf,colorize=TRUE)
+df$predictions
+```
 ## Decision Tree
 
 
