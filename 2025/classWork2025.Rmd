@@ -594,8 +594,9 @@ confusionMatrix(table(predicted =pred,actual = test$Gender ))
 ```
 ```{r}
 pred <- predict(knnfit,test)
+pred
 1*(test$Gender == "F")
-
+data.frame(pred)$F
 data.frame(pred)$F
 pred <- prediction(data.frame(pred)$F, 1*(test$Gender == "F"))
 pref <- performance(pred, "tpr", "fpr")
@@ -609,8 +610,60 @@ pred <- prediction(df$predictions, df$labels)
 perf <- performance(pred,"tpr","fpr")
 pred
 plot(perf,colorize=TRUE)
-df$predictions
 ```
 ## Decision Tree
 
+```{r}
+library(rpart)
+library(rpart.plot)
 
+tree <- rpart(Gender ~ Height + Weight,data = dfNoNa)
+tree
+```
+```{r tree viz}
+rpart.plot(tree, extra = 2)
+```
+```{r}
+pred <- predict(tree, dfNoNa, type = "class")
+head(pred)
+```
+Each has been classified into its category.  You can also recover the probabilities of the classification by dropping the *type = "class"*
+```{r}
+predict(tree, dfNoNa) %>%
+  head()
+```
+
+
+Confusion table follows by using the classified data.
+
+```{r}
+confusion_table <- with(dfNoNa, table(Gender, pred))
+confusion_table
+```
+
+or
+
+```{r}
+confusionMatrix(table(predicted =pred,actual = dfNoNa$Gender ))
+```
+
+```{r}
+varImp(tree)
+```
+
+```{r}
+tree <- rpart(Gender ~ . ,data = dfNoNa, method = "class",
+              control = rpart.control(minsplit = 2, cp = 0.0001))
+rpart.plot(tree, extra = 2)
+```
+
+```{r}
+fitControl <- trainControl(method = "LGOCV", p = 0.66, number = 1)
+rpartGrid <- expand.grid(cp = seq(0,1,0.1))
+classtrain <- train(Gender~., data = dfNoNa,
+      method = "rpart",
+     # trControl = fitControl,
+      tuneGrid = rpartGrid)
+
+classtrain
+```
