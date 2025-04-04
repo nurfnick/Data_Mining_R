@@ -653,8 +653,13 @@ varImp(tree)
 
 ```{r}
 tree <- rpart(Gender ~ . ,data = dfNoNa, method = "class",
-              control = rpart.control(minsplit = 2, cp = 0.0001))
+              control = rpart.control(minsplit = 2, cp = 0.0001)
+              )
 rpart.plot(tree, extra = 2)
+```
+
+```{r}
+varImp(tree)
 ```
 
 ```{r}
@@ -666,4 +671,61 @@ classtrain <- train(Gender~., data = dfNoNa,
       tuneGrid = rpartGrid)
 
 classtrain
+```
+
+## k Nearest Neighbors
+
+```{r}
+shrinkdata <- createDataPartition(dfNoNa$Year , p = 0.1, list = FALSE)
+model <- knn3(Gender ~ Height + Weight, data = dfNoNa[shrinkdata,], k = 5)
+pred <- predict(model, dfNoNa, type = "class")
+
+
+plot(dfNoNa[shrinkdata,"Height"],
+     dfNoNa[shrinkdata,"Weight"],
+     col = dfNoNa[shrinkdata,"Gender"], 
+     pch =1*(pred[shrinkdata]=="F") )
+
+```
+PCA does much better but is really damn hard to code...
+
+```{r}
+head(dfNoNa)
+dv <- dummyVars(~., data = dfNoNa[,!(colnames(dfNoNa) %in% c("Gender"))])
+dfNoNaDummy <- predict(dv, dfNoNa)
+pca <- princomp(dfNoNaDummy, cor =TRUE)
+plot(pca)
+dfPCA <- data.frame(predict(pca,dfNoNaDummy))
+dfPCA$Gender = dfNoNa$Gender
+model <- knn3(Gender ~., data = dfPCA)
+pred <- predict(model, dfPCA, type = "class")
+confusionMatrix(table(predicted =pred,actual = dfNoNa$Gender ))
+```
+## Logistic Regression
+```{r}
+dfNoNa$GenderBool <- 1*(dfNoNa$Gender == "M")
+
+sillyModel <- lm(GenderBool~Weight, data = dfNoNa)
+
+plot(dfNoNa$Weight, dfNoNa$GenderBool)
+abline(sillyModel)
+```
+
+Now I'll actually do logistic regression!
+```{r}
+logit <- glm(Gender ~ Weight, family = binomial, data = dfNoNa)
+p <- predict(logit, data = dfNoNa, type = "response")
+pr <- prediction(p, dfNoNa$Gender)
+plot(performance(pr, measure = "tpr", x.measure = "fpr"))
+```
+
+Above I plotted the ROC curve.  I'd like to recreate the graphic above and show how the probabilities change.
+
+```{r}
+fakedf <- data.frame(Weight = seq(min(dfNoNa$Weight),max(dfNoNa$Weight), 0.5))
+fake <- predict(logit,fakedf, type = "response")
+
+plot(dfNoNa$Weight, dfNoNa$GenderBool)
+lines(fakedf$Weight,fake)
+
 ```
