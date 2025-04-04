@@ -17,6 +17,8 @@ registerDoParallel(8)
 library(boot)
 library(caret)
 library(ROCR)
+library(MASS)
+library(devtools)
 ```
 
 # Data
@@ -728,4 +730,25 @@ fake <- predict(logit,fakedf, type = "response")
 plot(dfNoNa$Weight, dfNoNa$GenderBool)
 lines(fakedf$Weight,fake)
 
+```
+
+### LDA
+```{r}
+linear<- lda(Gender ~Weight+Height+Award, dfNoNa)
+linear
+```
+```{r}
+p <- predict(linear, dfNoNa)
+ldahist(p$x[,1], g = dfNoNa$Gender)
+```
+
+# ```{r}
+# devtools::install_github('fawda123/ggord')
+# library(ggord)
+# ggord(linear, dfNoNa$Award, ylim = c(-10,10))
+# ```
+
+```{r}
+p2 <- predict(linear,dfNoNa)$class
+confusionMatrix(table(Predicts = p2, Actual = dfNoNa$Gender))
 ```
