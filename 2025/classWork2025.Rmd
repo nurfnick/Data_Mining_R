@@ -742,13 +742,20 @@ p <- predict(linear, dfNoNa)
 ldahist(p$x[,1], g = dfNoNa$Gender)
 ```
 
-# ```{r}
-# devtools::install_github('fawda123/ggord')
-# library(ggord)
-# ggord(linear, dfNoNa$Award, ylim = c(-10,10))
-# ```
+
 
 ```{r}
 p2 <- predict(linear,dfNoNa)$class
 confusionMatrix(table(Predicts = p2, Actual = dfNoNa$Gender))
+```
+
+### Support Vector Machines
+
+```{r}
+svmGrid <- expand.grid(C = seq(0.1,2,0.1))
+
+train(Gender ~ Height +Weight, data = dfNoNa,
+      method = "svmLinear",
+      trControl = trainControl(method = "cv", p = 0.33),
+      tuneGrid = svmGrid)
 ```
