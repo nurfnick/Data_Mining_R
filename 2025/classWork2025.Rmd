@@ -734,12 +734,12 @@ lines(fakedf$Weight,fake)
 
 ### LDA
 ```{r}
-linear<- lda(Gender ~Weight+Height+Award, dfNoNa)
+linear<- lda(Award ~Weight+Height+Gender, dfNoNa)
 linear
 ```
 ```{r}
 p <- predict(linear, dfNoNa)
-ldahist(p$x[,1], g = dfNoNa$Gender)
+ldahist(p$x[,1], g = dfNoNa$Award)
 ```
 
 
