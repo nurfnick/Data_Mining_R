@@ -752,10 +752,45 @@ confusionMatrix(table(Predicts = p2, Actual = dfNoNa$Gender))
 ### Support Vector Machines
 
 ```{r}
-svmGrid <- expand.grid(C = seq(0.1,2,0.1))
+svmGrid <- expand.grid(C = seq(0.04,0.1,0.005))
 
 train(Gender ~ Height +Weight, data = dfNoNa,
       method = "svmLinear",
       trControl = trainControl(method = "cv", p = 0.33),
       tuneGrid = svmGrid)
+```
+
+## Clustering
+```{r}
+cl <- kmeans(dfNoNa[,c("Height","Weight")],2)
+
+
+plot(dfNoNa[,c("Height","Weight")], col = cl$cluster)#, pch =dfNoNa$Gender)
+points(cl$centers, col = 1:2, pch = 8, cex = 2)
+```
+
+Was 3 the correct number of clusters?
+```{r}
+library(factoextra)
+fviz_nbclust(x = dfNoNa[,c("Height","Weight")],FUNcluster = kmeans, method = 'wss' )
+```
+
+```{r}
+
+kmeans_res = kmeans(dfNoNa[,c("Height","Weight")], 2)
+fviz_cluster(kmeans_res, dfNoNa[,c("Height","Weight")])
+# determining k using the silhouette method
+fviz_nbclust(x = dfNoNa[,c("Height","Weight")],FUNcluster = kmeans, method = 'silhouette' )
+```
+
+```{r, warning=FALSE}
+#not sure what this does...
+set.seed(42)
+library(cluster)
+clust_gap <- clusGap(x = dfNoNa[,c("Height","Weight")], FUN = kmeans, K.max = 15, nstart = 25,  B = 5)
+fviz_gap_stat(clust_gap)
+```
+```{r}
+ag1 <- agnes(dfNoNa[,c("Height","Weight")])
+plot(ag1)
 ```
