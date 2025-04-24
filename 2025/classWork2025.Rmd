@@ -762,11 +762,11 @@ train(Gender ~ Height +Weight, data = dfNoNa,
 
 ## Clustering
 ```{r}
-cl <- kmeans(dfNoNa[,c("Height","Weight")],2)
+cl <- kmeans(dfNoNa[,c("Height","Weight")],3)
 
 
-plot(dfNoNa[,c("Height","Weight")], col = cl$cluster)#, pch =dfNoNa$Gender)
-points(cl$centers, col = 1:2, pch = 8, cex = 2)
+plot(dfNoNa[,c("Height","Weight")], col = cl$cluster)# pch =dfNoNa$Gender)
+points(cl$centers, col = 1:3, pch = 8, cex = 2)
 ```
 
 Was 3 the correct number of clusters?
@@ -793,4 +793,22 @@ fviz_gap_stat(clust_gap)
 ```{r}
 ag1 <- agnes(dfNoNa[,c("Height","Weight")])
 plot(ag1)
+```
+
+### DBSCAN
+
+```{r}
+library(dbscan)
+
+res <- dbscan(dfNoNa[,c("Height", "Weight")], eps = 2)
+plot(dfNoNa[,c("Height", "Weight")], col = res$cluster)
+points(dfNoNa[res$cluster == 0,c("Height", "Weight")], pch = 3, col = "grey")
+```
+
+```{r}
+clplot(dfNoNa[,c("Height", "Weight")],res)
+```
+
+```{r}
+hullplot(dfNoNa[,c("Height", "Weight")],res)
 ```
