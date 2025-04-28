@@ -812,3 +812,10 @@ clplot(dfNoNa[,c("Height", "Weight")],res)
 ```{r}
 hullplot(dfNoNa[,c("Height", "Weight")],res)
 ```
+
+```{r}
+x <- scale(dfNoNa[,c("Height", "Weight")])
+
+res <- dbscan(x, eps = 0.4)
+clplot(x,res)
+```
