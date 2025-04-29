@@ -18,7 +18,9 @@ library(boot)
 library(caret)
 library(ROCR)
 library(MASS)
-library(devtools)
+#library(devtools)
+df <- read.csv("StudentSurveys.csv")
+dfNoNa <- df[complete.cases(df),]
 ```
 
 # Data
@@ -818,4 +820,10 @@ x <- scale(dfNoNa[,c("Height", "Weight")])
 
 res <- dbscan(x, eps = 0.4)
 clplot(x,res)
+```
+
+```{r}
+
+pca <- prcomp(dfNoNa[,c("Height","Weight","Exercise","TV","VerbalSAT" , "MathSAT"  ,  "SAT"     ,   "GPA"  ,      "Pulse"     ,"Piercings" )])
+plot(pca)
 ```
