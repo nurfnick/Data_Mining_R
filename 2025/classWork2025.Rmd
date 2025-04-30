@@ -827,3 +827,12 @@ clplot(x,res)
 pca <- prcomp(dfNoNa[,c("Height","Weight","Exercise","TV","VerbalSAT" , "MathSAT"  ,  "SAT"     ,   "GPA"  ,      "Pulse"     ,"Piercings" )])
 plot(pca)
 ```
+
+```{r}
+pcadata <- data.frame(predict(pca,dfNoNa))
+pcadata$Gender <- dfNoNa$Gender
+
+ggplot(pcadata, aes(x = PC1, y = PC2, colour = Gender)) +
+  geom_point()
+
+```
