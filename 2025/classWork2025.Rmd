@@ -800,7 +800,7 @@ plot(ag1)
 ```{r}
 library(dbscan)
 
-res <- dbscan(dfNoNa[,c("Height", "Weight")], eps = 2)
+res <- dbscan(dfNoNa[,c("Height", "Weight")], eps = 3, minPts = 5)
 plot(dfNoNa[,c("Height", "Weight")], col = res$cluster)
 points(dfNoNa[res$cluster == 0,c("Height", "Weight")], pch = 3, col = "grey")
 ```
@@ -816,6 +816,6 @@ hullplot(dfNoNa[,c("Height", "Weight")],res)
 ```{r}
 x <- scale(dfNoNa[,c("Height", "Weight")])
 
-res <- dbscan(x, eps = 0.4)
+res <- dbscan(x, eps = 0.2)
 clplot(x,res)
 ```
