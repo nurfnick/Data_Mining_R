@@ -822,10 +822,13 @@ res <- dbscan(x, eps = 0.2)
 clplot(x,res)
 ```
 
+### PCA
+
 ```{r}
 
-pca <- prcomp(dfNoNa[,c("Height","Weight","Exercise","TV","VerbalSAT" , "MathSAT"  ,  "SAT"     ,   "GPA"  ,      "Pulse"     ,"Piercings" )])
+pca <- prcomp(dfNoNa[,c("Height","Weight","Exercise","TV","VerbalSAT" , "MathSAT"   ,   "GPA"  ,      "Pulse"     ,"Piercings" )])
 plot(pca)
+pca
 ```
 
 ```{r}
