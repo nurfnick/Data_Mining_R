@@ -839,3 +839,35 @@ ggplot(pcadata, aes(x = PC1, y = PC2, colour = Gender)) +
   geom_point()
 
 ```
+
+### Outliers
+
+```{r}
+boxplot(dfNoNa$Height)
+```
+```{r}
+boxplot.stats(dfNoNa$Height)$out
+```
+
+```{r}
+(83-mean(dfNoNa$Height))/sd(dfNoNa$Height)
+```
+```{r}
+hist(dfNoNa$Height)
+```
+
+
+
+```{r}
+linear <- lm(Weight ~ Height, data = dfNoNa)
+plot(linear)
+```
+
+```{r}
+dfNoNa[rownames(dfNoNa)==358,]
+```
+
+```{r}
+library(outliers)
+grubbs.test(dfNoNa$Height)
+```
