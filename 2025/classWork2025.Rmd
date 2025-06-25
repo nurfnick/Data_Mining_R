@@ -680,10 +680,18 @@ classtrain
 ## k Nearest Neighbors
 
 ```{r}
-shrinkdata <- createDataPartition(dfNoNa$Year , p = 0.1, list = FALSE)
+shrinkdata <- createDataPartition(dfNoNa$Year , p = 0.66, list = FALSE)
 model <- knn3(Gender ~ Height + Weight, data = dfNoNa[shrinkdata,], k = 5)
 pred <- predict(model, dfNoNa, type = "class")
 
+
+dfPred <- dfNoNa[shrinkdata,]
+dfPred$Prediction = pred[shrinkdata]
+
+pred[shrinkdata]
+
+ggplot(dfPred,aes(x = Height,y = Weight,color = Gender, shape = Prediction))+
+  geom_point()
 
 plot(dfNoNa[shrinkdata,"Height"],
      dfNoNa[shrinkdata,"Weight"],
